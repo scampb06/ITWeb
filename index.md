@@ -9,9 +9,9 @@ This site documents incidents combining a cyber-enabled component and a foreign 
 
 | Continent | Classification index |
 |---|---|
-| [Europe](country_indexes/EU-classification.md) | 39 incidents |
-| [North America](country_indexes/NA-classification.md) | 12 incidents |
+| [Europe](country_indexes/EU-classification.md) | 40 incidents |
+| [North America](country_indexes/NA-classification.md) | 16 incidents |
 | [South America](country_indexes/SA-classification.md) | 7 incidents |
-| [Asia](country_indexes/AS-classification.md) | 13 incidents |
-| [Africa](country_indexes/AF-classification.md) | 13 incidents |
+| [Asia](country_indexes/AS-classification.md) | 14 incidents |
+| [Africa](country_indexes/AF-classification.md) | 20 incidents |
 | [Australia](country_indexes/AU-classification.md) | 4 incidents |

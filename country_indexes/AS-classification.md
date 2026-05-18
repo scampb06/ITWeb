@@ -15,6 +15,14 @@ The **% fit** column rates how well each incident fits its primary type, on a 0.
 - **≤ 0.5** — capped here for Type-1 incidents without a real unauthorised intrusion or DDoS, and for Type-2 incidents lacking a tactically-connected subsequent intrusion or DDoS by the same actor.
 - **Type-3** scored on whether the cyber and influence components are by the same threat actor and close in time.
 
+<div id="fit-filter" style="margin:16px 0;padding:12px 16px;background:#f3f6fb;border:1px solid #d0d7de;border-radius:6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+  <label for="fitSlider" style="font-weight:600;white-space:nowrap;">Min % fit:</label>
+  <input type="range" id="fitSlider" min="0" max="1" step="0.1" value="0" style="width:200px;cursor:pointer;">
+  <span id="fitValue" style="font-weight:600;min-width:2.5em;">≥ 0.0</span>
+  <span id="fitCount" style="color:#555;font-size:0.9em;"></span>
+  <button id="fitReset" style="padding:4px 10px;border:1px solid #d0d7de;border-radius:4px;cursor:pointer;background:#fff;font-size:0.9em;">Show all</button>
+</div>
+
 | ID | Incident title | Country / scope | Primary type | Secondary type(s) | Perpetrator (as described) | Main victim category | % fit |
 |---|---|---|---|---|---|---|---|
 | AS-1 | [BadBazaar surveillance and influence pressure targeting Uyghur populations](../all_incidents/AS-BadBazaar-Surveillance-and-Influence-Pressure-Targeting-Uyghur-Populations.md) | China / Uyghur diaspora in Asia and abroad | 2c – deepfake/app-impersonation scam (trojanised apps masquerading as trusted community tools) | 1c – downstream surveillance and intimidation supporting narrative control | China/PRC-linked (APT15-linked reporting) | Civil society, ethnic-minority activists | 0.9 |
@@ -39,3 +47,32 @@ The **% fit** column rates how well each incident fits its primary type, on a 0.
 - **Iran appears as both attacker and victim** (attacker against Israel/US targets; perpetrator-state in repression of its own civil society; target of Pentagon covert campaigns).
 - **Notable Western-government attribution** for five incidents — a useful nuance for the keynote on "patriotic hacktivism, disinformation-as-a-service and state-backed cyber warfare coalescing".
 - **Arup deepfake-CFO fraud (AS-14)** stands out as the dataset's textbook 2c case: a US$25.6M loss with no system intrusion at all, achieved entirely through AI-generated impersonation of senior executives during a live video conference.
+
+<script>
+(function () {
+  function filterByFit() {
+    var threshold = parseFloat(document.getElementById('fitSlider').value);
+    document.getElementById('fitValue').textContent = '≥ ' + threshold.toFixed(1);
+    var rows = document.querySelectorAll('table tbody tr');
+    var visible = 0;
+    rows.forEach(function (row) {
+      var cells = row.querySelectorAll('td');
+      var last = cells[cells.length - 1];
+      var val = parseFloat(last ? last.textContent.trim() : '');
+      var show = isNaN(val) || val >= threshold;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('fitCount').textContent =
+      visible + ' / ' + rows.length + ' shown';
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('fitSlider').addEventListener('input', filterByFit);
+    document.getElementById('fitReset').addEventListener('click', function () {
+      document.getElementById('fitSlider').value = 0;
+      filterByFit();
+    });
+    filterByFit();
+  });
+})();
+</script>

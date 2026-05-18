@@ -17,6 +17,14 @@ The **% fit** column rates how well each incident fits its primary type, on a 0.
 - **≤ 0.5** — capped here for Type-1 incidents without a real unauthorised intrusion or DDoS, and for Type-2 incidents lacking a tactically-connected subsequent intrusion or DDoS by the same actor.
 - **Type-3** scored on whether the cyber and influence components are by the same threat actor and close in time.
 
+<div id="fit-filter" style="margin:16px 0;padding:12px 16px;background:#f3f6fb;border:1px solid #d0d7de;border-radius:6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+  <label for="fitSlider" style="font-weight:600;white-space:nowrap;">Min % fit:</label>
+  <input type="range" id="fitSlider" min="0" max="1" step="0.1" value="0" style="width:200px;cursor:pointer;">
+  <span id="fitValue" style="font-weight:600;min-width:2.5em;">≥ 0.0</span>
+  <span id="fitCount" style="color:#555;font-size:0.9em;"></span>
+  <button id="fitReset" style="padding:4px 10px;border:1px solid #d0d7de;border-radius:4px;cursor:pointer;background:#fff;font-size:0.9em;">Show all</button>
+</div>
+
 | ID | Incident title | Country / scope | Primary type | Secondary type(s) | Perpetrator (as described) | Main victim category | % fit |
 |---|---|---|---|---|---|---|---|
 | AF-1 | [Coordinated harassment and fake web pages targeting Tanzanian opposition and civil society leaders](../all_incidents/AF-Coordinated-Harassment-and-Fake-Web-Pages-Targeting-Tanzanian-Opposition-and-Civil-Society-Leaders.md) | Tanzania | 1c – hack-and-post / fake-page injection into the information space | 2d – website impersonation (fake web pages of targets); abuse of platform reporting systems to silence victims | Domestic political/PR-aligned networks (Tanzania) | Civil society, opposition figures | 0.5 |
@@ -47,3 +55,32 @@ The **% fit** column rates how well each incident fits its primary type, on a 0.
 - **Corporate / private-sector incidents (predominantly 2f):** 9 cases — including ports and rail (Transnet), credit bureaus (TransUnion, Experian), telecoms (Cell C, MTN), mining (Sibanye-Stillwater), poultry (Astral Foods), aviation (Kenya Airways), and a wave of industrial cases (AF-6). All but the Experian case follow the ransomware double-extortion playbook; Experian is an exemplary case of pure influence-enabled cyber via legitimate-client impersonation.
 - **Most-affected victim categories:** elections and voters, civil society, and a rapidly growing tail of private-sector / critical-infrastructure targets across banking, telecoms, mining, agriculture and logistics.
 - **South Africa-specific observation:** the country accounts for nine of the 20 African cases and is the centre of the continent's emerging double-extortion-ransomware epidemic.
+
+<script>
+(function () {
+  function filterByFit() {
+    var threshold = parseFloat(document.getElementById('fitSlider').value);
+    document.getElementById('fitValue').textContent = '≥ ' + threshold.toFixed(1);
+    var rows = document.querySelectorAll('table tbody tr');
+    var visible = 0;
+    rows.forEach(function (row) {
+      var cells = row.querySelectorAll('td');
+      var last = cells[cells.length - 1];
+      var val = parseFloat(last ? last.textContent.trim() : '');
+      var show = isNaN(val) || val >= threshold;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('fitCount').textContent =
+      visible + ' / ' + rows.length + ' shown';
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('fitSlider').addEventListener('input', filterByFit);
+    document.getElementById('fitReset').addEventListener('click', function () {
+      document.getElementById('fitSlider').value = 0;
+      filterByFit();
+    });
+    filterByFit();
+  });
+})();
+</script>

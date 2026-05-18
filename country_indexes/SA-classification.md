@@ -15,6 +15,14 @@ The **% fit** column rates how well each incident fits its primary type, on a 0.
 - **≤ 0.5** — capped here for Type-1 incidents without a real unauthorised intrusion or DDoS, and for Type-2 incidents lacking a tactically-connected subsequent intrusion or DDoS by the same actor.
 - **Type-3** scored on whether the cyber and influence components are by the same threat actor and close in time.
 
+<div id="fit-filter" style="margin:16px 0;padding:12px 16px;background:#f3f6fb;border:1px solid #d0d7de;border-radius:6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+  <label for="fitSlider" style="font-weight:600;white-space:nowrap;">Min % fit:</label>
+  <input type="range" id="fitSlider" min="0" max="1" step="0.1" value="0" style="width:200px;cursor:pointer;">
+  <span id="fitValue" style="font-weight:600;min-width:2.5em;">≥ 0.0</span>
+  <span id="fitCount" style="color:#555;font-size:0.9em;"></span>
+  <button id="fitReset" style="padding:4px 10px;border:1px solid #d0d7de;border-radius:4px;cursor:pointer;background:#fff;font-size:0.9em;">Show all</button>
+</div>
+
 | ID | Incident title | Country / scope | Primary type | Secondary type(s) | Perpetrator (as described) | Main victim category | % fit |
 |---|---|---|---|---|---|---|---|
 | SA-1 | [Disinformation networks and cyber-enabled manipulation during Brazil's 2018 election](../all_incidents/SA-Disinformation-Networks-and-Cyber-Enabled-Manipulation-During-Brazils-2018-Election.md) | Brazil | 1c – cyber-enabled CIB and mass-messaging propagation (WhatsApp-centred information ecosystem and coordinated content amplification) | — | Domestic political/PR-aligned networks and online actors | Elections, voters, democratic institutions | 0.4 |
@@ -32,3 +40,32 @@ The **% fit** column rates how well each incident fits its primary type, on a 0.
 - **Perpetrator mix is distinctive**: domestic political networks and commercial PR firms (Brazil, Estraterra, Venezuela) dominate, with extra-regional state actors (Russia, China, Pentagon) as a secondary layer riding the same infrastructure.
 - **Brazil's 2022 institutional attacks (SA-2)** are notable for explicitly targeting an *electoral institution* (the Superior Electoral Court) — a pattern that prefigures many later attempts elsewhere to delegitimise vote-counting bodies.
 - **SA-5 (Pentagon Entorno Diario)** mirrors the AS-10/11/12/13 and EU-27 Pentagon-linked gc_ network operations, confirming this as a globally distributed Western covert influence ecosystem worth flagging in the keynote.
+
+<script>
+(function () {
+  function filterByFit() {
+    var threshold = parseFloat(document.getElementById('fitSlider').value);
+    document.getElementById('fitValue').textContent = '≥ ' + threshold.toFixed(1);
+    var rows = document.querySelectorAll('table tbody tr');
+    var visible = 0;
+    rows.forEach(function (row) {
+      var cells = row.querySelectorAll('td');
+      var last = cells[cells.length - 1];
+      var val = parseFloat(last ? last.textContent.trim() : '');
+      var show = isNaN(val) || val >= threshold;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('fitCount').textContent =
+      visible + ' / ' + rows.length + ' shown';
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('fitSlider').addEventListener('input', filterByFit);
+    document.getElementById('fitReset').addEventListener('click', function () {
+      document.getElementById('fitSlider').value = 0;
+      filterByFit();
+    });
+    filterByFit();
+  });
+})();
+</script>

@@ -15,6 +15,14 @@ The **% fit** column rates how well each incident fits its primary type, on a 0.
 - **≤ 0.5** — capped here for Type-1 incidents without a real unauthorised intrusion or DDoS, and for Type-2 incidents lacking a tactically-connected subsequent intrusion or DDoS by the same actor.
 - **Type-3** scored on whether the cyber and influence components are by the same threat actor and close in time. NA-11 (Russian active measures 2016–2025) drops to 0.5 because the long span of years stretches "parallel" beyond contemporaneous co-occurrence.
 
+<div id="fit-filter" style="margin:16px 0;padding:12px 16px;background:#f3f6fb;border:1px solid #d0d7de;border-radius:6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+  <label for="fitSlider" style="font-weight:600;white-space:nowrap;">Min % fit:</label>
+  <input type="range" id="fitSlider" min="0" max="1" step="0.1" value="0" style="width:200px;cursor:pointer;">
+  <span id="fitValue" style="font-weight:600;min-width:2.5em;">≥ 0.0</span>
+  <span id="fitCount" style="color:#555;font-size:0.9em;"></span>
+  <button id="fitReset" style="padding:4px 10px;border:1px solid #d0d7de;border-radius:4px;cursor:pointer;background:#fff;font-size:0.9em;">Show all</button>
+</div>
+
 | ID | Incident title | Country / scope | Primary type | Secondary type(s) | Perpetrator (as described) | Main victim category | % fit |
 |---|---|---|---|---|---|---|---|
 | NA-1 | [Canada federal election AI-enabled cyber and disinformation threat environment](../all_incidents/NA-Canada-Federal-Election-AI-Enabled-Cyber-and-Disinformation-Threat-Environment.md) | Canada | 3 – parallel cyber-influence (anticipated phishing, hack-and-leak attempts and AI-supported disinformation assessed jointly by Canadian authorities) | 1b – assessed hack-and-leak; 2b – phishing; 2c – deepfakes / synthetic content | Mixed/uncertain (PRC-, Russia- and Iran-linked actors per CSE assessments) | Elections, voters, political parties, diaspora communities | 0.4 |
@@ -41,3 +49,32 @@ The **% fit** column rates how well each incident fits its primary type, on a 0.
 - **The corporate cases (NA-13 through NA-16) introduce three distinct profiles**: state-attributed hack-and-leak with destructive intent (Sony), criminal ransomware with influence-style social-engineering entry (MGM), and pure-financial double-extortion ransomware with major societal impact (JBS, Change Healthcare). Change Healthcare additionally features an unusual threat-actor-against-threat-actor deception (ALPHV's fake law-enforcement-seizure exit-scam against its own affiliate).
 - **NA-10 (Mexico) is recorded for completeness** — the source file explicitly notes that no incidents met the inclusion threshold; this is not a "gap" but a documented absence in the underlying dataset.
 - **NA-1 (Canada 2025) and NA-11 (Russian active measures) are textbook Type-3 hybrid environments** in which authorities explicitly assessed cyber and influence as a single threat picture rather than two separate ones — a useful framing for the keynote.
+
+<script>
+(function () {
+  function filterByFit() {
+    var threshold = parseFloat(document.getElementById('fitSlider').value);
+    document.getElementById('fitValue').textContent = '≥ ' + threshold.toFixed(1);
+    var rows = document.querySelectorAll('table tbody tr');
+    var visible = 0;
+    rows.forEach(function (row) {
+      var cells = row.querySelectorAll('td');
+      var last = cells[cells.length - 1];
+      var val = parseFloat(last ? last.textContent.trim() : '');
+      var show = isNaN(val) || val >= threshold;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('fitCount').textContent =
+      visible + ' / ' + rows.length + ' shown';
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('fitSlider').addEventListener('input', filterByFit);
+    document.getElementById('fitReset').addEventListener('click', function () {
+      document.getElementById('fitSlider').value = 0;
+      filterByFit();
+    });
+    filterByFit();
+  });
+})();
+</script>
