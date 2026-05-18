@@ -1,4 +1,4 @@
-﻿---
+---
 layout: default
 ---
 
@@ -9,12 +9,18 @@ This table classifies 4 incidents targeting Australian entities according to the
 - **(2) Influence-enabled cyber** — disinformation/deception enabling a cyber intrusion (2a–2h)
 - **(3) Parallel cyber–influence** — simultaneous, independent cyber and influence operations by the same actor
 
-| ID | Incident title | Country / scope | Primary type | Secondary type(s) | Perpetrator (as described) | Main victim category |
-|---|---|---|---|---|---|---|
-| AU-1 | [Australia's regulatory response to misinformation as a national-security and critical-infrastructure issue](../all_incidents/AU-Australias-Regulatory-Response-to-Misinformation-as-a-National-Security-and-Critical-Infrastructure-Issue.md) | Australia | 1c – cyber-enabled CIB and platform-scale propaganda dissemination (treated by Australian policy as a critical-infrastructure threat) | — | Mixed/uncertain (multiple online actors including foreign state-sponsored disinformation actors) | Elections, public health, critical infrastructure, civil society |
-| AU-2 | [China-linked online influence campaign targeting Australian domestic and foreign policy debates](../all_incidents/AU-China-Linked-Online-Influence-Campaign-Targeting-Australian-Domestic-and-Foreign-Policy-Debates.md) | Australia | 1c – cyber-enabled CIB using fake accounts with AI-generated profile images | 2e – AI-generated identities used in account creation | China/PRC-linked (per ASPI and Recorded Future) | Civil society, public opinion, policy debate |
-| AU-3 | [Coordinated inauthentic behavior and electoral disinformation concerns around Australian democratic events](../all_incidents/AU-Coordinated-Inauthentic-Behavior-and-Electoral-Disinformation-Concerns-Around-Australian-Democratic-Events.md) | Australia (federal election and Voice referendum environments) | 1c – cyber-enabled CIB and platform manipulation around elections | — | Mixed/uncertain (not always publicly attributable; fake profiles and coordinated manipulation identified by platforms and researchers) | Elections, voters, referendum participants |
-| AU-4 | [Cyber intrusion into Australian political parties and broader concerns about foreign election interference](../all_incidents/AU-Cyber-Intrusion-into-Australian-Political-Parties-and-Broader-Concerns-About-Foreign-Election-Interference.md) | Australia | 1b – hack-and-leak (latent / pre-positioning; treated in the national-security framing as a hack-and-leak risk environment) | 3 – parallel cyber-influence risk framing (intrusion situated within wider foreign-interference threat picture) | China/PRC-linked (sophisticated state actor; public commentary pointed to China though Australia did not publicly name at the time) | Political parties, parliament, elections |
+The **% fit** column rates how well each incident fits its primary type, on a 0.0–1.0 scale:
+- **1.0** — textbook fit (defining act of the sub-type clearly present).
+- **0.7–0.9** — strong fit, partial or mixed on one element.
+- **≤ 0.5** — capped here for Type-1 incidents without a real unauthorised intrusion or DDoS, and for Type-2 incidents lacking a tactically-connected subsequent intrusion or DDoS by the same actor.
+- **Type-3** scored on whether the cyber and influence components are by the same threat actor and close in time.
+
+| ID | Incident title | Country / scope | Primary type | Secondary type(s) | Perpetrator (as described) | Main victim category | % fit |
+|---|---|---|---|---|---|---|---|
+| AU-1 | [Australia's regulatory response to misinformation as a national-security and critical-infrastructure issue](../all_incidents/AU-Australias-Regulatory-Response-to-Misinformation-as-a-National-Security-and-Critical-Infrastructure-Issue.md) | Australia | 1c – cyber-enabled CIB and platform-scale propaganda dissemination (treated by Australian policy as a critical-infrastructure threat) | — | Mixed/uncertain (multiple online actors including foreign state-sponsored disinformation actors) | Elections, public health, critical infrastructure, civil society | 0.3 |
+| AU-2 | [China-linked online influence campaign targeting Australian domestic and foreign policy debates](../all_incidents/AU-China-Linked-Online-Influence-Campaign-Targeting-Australian-Domestic-and-Foreign-Policy-Debates.md) | Australia | 1c – cyber-enabled CIB using fake accounts with AI-generated profile images | 2e – AI-generated identities used in account creation | China/PRC-linked (per ASPI and Recorded Future) | Civil society, public opinion, policy debate | 0.5 |
+| AU-3 | [Coordinated inauthentic behavior and electoral disinformation concerns around Australian democratic events](../all_incidents/AU-Coordinated-Inauthentic-Behavior-and-Electoral-Disinformation-Concerns-Around-Australian-Democratic-Events.md) | Australia (federal election and Voice referendum environments) | 1c – cyber-enabled CIB and platform manipulation around elections | — | Mixed/uncertain (not always publicly attributable; fake profiles and coordinated manipulation identified by platforms and researchers) | Elections, voters, referendum participants | 0.4 |
+| AU-4 | [Cyber intrusion into Australian political parties and broader concerns about foreign election interference](../all_incidents/AU-Cyber-Intrusion-into-Australian-Political-Parties-and-Broader-Concerns-About-Foreign-Election-Interference.md) | Australia | 1b – hack-and-leak (latent / pre-positioning; treated in the national-security framing as a hack-and-leak risk environment) | 3 – parallel cyber-influence risk framing (intrusion situated within wider foreign-interference threat picture) | China/PRC-linked (sophisticated state actor; public commentary pointed to China though Australia did not publicly name at the time) | Political parties, parliament, elections | 0.6 |
 
 ## Continental observations
 
