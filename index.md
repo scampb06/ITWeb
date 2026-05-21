@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Hybrid Cyber/FIMI Incidents by Continent
+title: Hybrid cyber and information operations: how attackers blend disruption and influence in 2026
 ---
 
 ## Presentations & Dashboards
