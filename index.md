@@ -40,4 +40,4 @@ Background research papers prepared for the ITWeb Security Summit 2026 keynote. 
 | Resource | Description |
 |---|---|
 | [Keynote Presentation](analysis/itweb_hybrid_keynote.html) | ITWeb Security Summit 2026 — "Hybrid Cyber and Information Operations: How Attackers Blend Disruption and Influence in 2026" |
-| [Africa Country Dashboard](analysis/africa-country-dashboard-updated.html) | Interactive dashboard: hybrid cyber-influence incidents by African country, with filtering by incident type, perpetrator, and % fit |
+| [Africa Country Dashboard](analysis/africa-country-dashboard-updated.html) | Interactive dashboard: map of Africa with per country statistics on population, economic indicators, and disinformation. Filter by region and choose metrics for scatter plot |
