@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Hybrid cyber and information operations: how attackers blend disruption and influence in 2026
+title: Hybrid cyber and information operations: how attackers blend disruption and influence in 2026  
 ---
 
 ## Presentations & Dashboards
