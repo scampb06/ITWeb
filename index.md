@@ -29,6 +29,7 @@ Background research papers prepared for the ITWeb Security Summit 2026 keynote. 
 | [Information Manipulation & Hate Speech](analysis/information-manipulation.md) | Real-world harms to ordinary Africans from disinformation and hate speech — deaths, violence, economic loss, and psychological injury |
 | [Countermeasures & Frameworks](analysis/countermeasures.md) | Elite and community responses to hybrid operations; the 2×2 matrix of countermeasures by audience and information-access level |
 | [Cunliffe-Jones Analysis](analysis/cunliffe-jones-analysis.md) | The 12 most harmful or high-impact false claims identified in the African fact-checking database |
+| [Perplexity Pro / Claude Opus 4.7 Incident Classification](analysis/incident_classification_scheme.md) | Working with Perplexity Pro to classify incidents according to the 3-part schema (cyber-enabled influence, influence-enabled cyber, parallel) |
 | [Perplexity Pro / Claude Opus 4.7 Q&A](analysis/perplexity-qa.md) | Questions and answers generated using Perplexity Pro and Claude Opus 4.7 on hybrid cyber-influence operations |
 
 ---
