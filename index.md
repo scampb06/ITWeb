@@ -8,6 +8,7 @@ title: Hybrid Cyber/FIMI Incidents by Continent
 | Resource | Description |
 |---|---|
 | [Keynote Presentation](analysis/itweb_hybrid_keynote.html) | ITWeb Security Summit 2026 — "Hybrid Cyber and Information Operations: How Attackers Blend Disruption and Influence in 2026" |
+| [Keynote Presentation (shorter)](analysis/itweb_keynote_v2.html) | Shorter version of the ITWeb Security Summit 2026 keynote presentation |
 | [Africa Country Dashboard](analysis/africa-country-dashboard-updated.html) | Interactive dashboard: map of Africa with per country statistics on population, economic indicators, and disinformation. Filter by region and choose metrics for scatter plot |
 
 ---
