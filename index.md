@@ -3,12 +3,6 @@ layout: default
 title: Hybrid Cyber/FIMI Incidents by Continent
 ---
 
-# Hybrid Cyber/FIMI Incidents by Continent
-
-This site documents incidents combining a cyber-enabled component and a foreign information manipulation and interference (FIMI) component, classified by continent. Each continent links to a classification index with full taxonomy, perpetrator attribution, and victim categories. Each incident in the index links to its own detailed case file.
-
----
-
 ## Presentations & Dashboards
 
 | Resource | Description |
@@ -36,6 +30,8 @@ Background research papers prepared for the ITWeb Security Summit 2026 keynote. 
 ---
 
 ## Incident Classification by Continent
+
+This table documents incidents combining a cyber-enabled component and a foreign information manipulation and interference (FIMI) component, classified by continent. Each continent links to a classification index with full taxonomy, perpetrator attribution, and victim categories. Each incident in the index links to its own detailed case file. This is a sample only. It is subject to availability and selection bias and is not representative of the overall population of incidents.
 
 | Continent | Classification index |
 |---|---|
