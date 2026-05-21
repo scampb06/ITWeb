@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="slides-format" content="viewport" />
+  <title>Hybrid cyber and information operations: how attackers blend disruption and influence in 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-bg: #0a0a0a;
+      --color-bg-deep: #111111;
+      --color-surface: #161616;
+      --color-text: #ecfdf5;
+      --color-text-secondary: #cbd5e1;
+      --color-text-muted: #94a3b8;
+      --color-accent-1: #00FF41;
+      --color-accent-2: #FFA500;
+      --color-accent-3: #FF0000;
+      --color-glass-bg: rgba(0,255,65,0.05);
+      --color-glass-border: rgba(0,255,65,0.10);
+      --color-vignette: rgba(0,0,0,0.42);
+      --font-display: 'Instrument Serif', serif;
+      --font-body: 'Inter', sans-serif;
+    }
+  </style>
+  <style>
+    :root { --color-bg: #0a0a0a; --color-text: #ecfdf5; --glow-color-rgb: 0,255,65; --color-glass-bg: rgba(0,255,65,0.05); --color-glass-border: rgba(0,255,65,0.10); }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { background: var(--color-bg); margin: 0; }
+    body { font-family: 'Inter', sans-serif; color: var(--color-text); overflow: hidden; height: 100vh; width: 100vw; }
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transform: scale(0.95); transition: opacity 0.7s ease, transform 0.7s ease; pointer-events: none; overflow: hidden; }
+    .slide.active { opacity: 1; transform: scale(1); pointer-events: all; }
+    .slide > .content { position: relative; z-index: 2; width: 100%; max-width: 1220px; padding: clamp(1.25rem, 3vw, 3rem); }
+    .nav-controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; z-index: 100; background: var(--color-glass-bg); backdrop-filter: blur(10px); padding: 10px 24px; border-radius: 40px; border: 1px solid var(--color-glass-border); }
+    .nav-btn { width: 40px; height: 40px; border: none; background: var(--color-glass-bg); color: #00FF41; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+    .slide-dots { display: flex; gap: 8px; }
+    .slide-dots .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.18); cursor: pointer; transition: background .3s, transform .3s; }
+    .slide-dots .dot.active { background: #00FF41; transform: scale(1.3); }
+    .slide-counter { font-size: .8rem; color: #94a3b8; min-width: 52px; text-align: center; }
+    .reveal { opacity: 0; transform: translateY(20px); }
+    .text-glow { text-shadow: 0 0 20px rgba(var(--glow-color-rgb), .5), 0 0 40px rgba(var(--glow-color-rgb), .18); }
+    .stat-glow { text-shadow: 0 0 30px rgba(var(--glow-color-rgb), .6), 0 0 60px rgba(var(--glow-color-rgb), .2); }
+    @keyframes glow-pulse { 0%,100% { text-shadow: 0 0 20px rgba(var(--glow-color-rgb), .5), 0 0 40px rgba(var(--glow-color-rgb), .2); } 50% { text-shadow: 0 0 30px rgba(var(--glow-color-rgb), .8), 0 0 60px rgba(var(--glow-color-rgb), .3);} }
+    .glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+    @keyframes float-slow { 0% { transform: translate(0,0) scale(1);} 25% { transform: translate(60px,-50px) scale(1.12);} 50% { transform: translate(-40px,40px) scale(.9);} 75% { transform: translate(50px,20px) scale(1.08);} 100% { transform: translate(0,0) scale(1);} }
+    @keyframes float-drift { 0% { transform: translate(0,0) scale(1) rotate(0deg);} 33% { transform: translate(-50px,-60px) scale(1.15) rotate(3deg);} 66% { transform: translate(40px,30px) scale(.88) rotate(-2deg);} 100% { transform: translate(0,0) scale(1) rotate(0deg);} }
+    @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-15px);} }
+    .gradient-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); animation: float-slow 10s ease-in-out infinite; }
+    .blob:nth-child(2) { animation: float-drift 14s ease-in-out infinite; }
+    .blob:nth-child(3) { animation: float-slow 18s ease-in-out infinite reverse; }
+    .slide::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); background-repeat: repeat; background-size: 256px 256px; opacity: .03; mix-blend-mode: overlay; }
+    .slide::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.42) 100%); }
+    .bar-chart { display: flex; align-items: flex-end; gap: .75rem; height: 180px; }
+    .bar-col { display: flex; flex-direction: column; align-items: center; gap: .35rem; flex: 1; }
+    .bar { border-radius: 8px 8px 0 0; width: 100%; }
+    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #00FF41, #FFA500); }
+    .odometer { display: inline-flex; overflow: hidden; gap: 0; }
+    .odometer-digit { display: flex; flex-direction: column; transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); line-height: 1; height: 1em; overflow: hidden; }
+    .odometer-digit span { display: block; text-align: center; }
+    .odometer-separator { opacity: .6; }
+    .deco-shape { position: absolute; border: 1px solid rgba(0,255,65,.12); border-radius: 24px; z-index: 1; pointer-events: none; }
+    .matrix td, .matrix th { border: 1px solid rgba(0,255,65,.14); padding: 10px 12px; vertical-align: top; }
+    .matrix th { background: rgba(0,255,65,.06); }
+    .small { font-size: .86rem; line-height: 1.25rem; }
+    .tiny { font-size: .74rem; line-height: 1.05rem; }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: .01ms !important; transition-duration: .2s !important; } }
+  </style>
+</head>
+<body>
+<div class="mouse-spotlight" style="position:fixed;inset:0;z-index:99;pointer-events:none;"></div>
+<div class="deck">
+
+  <div class="slide slide-1 active" data-slide="1">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:520px;height:520px;top:-120px;right:-120px;background:#00FF41;opacity:.12"></div>
+      <div class="blob" style="width:340px;height:340px;bottom:-80px;left:-60px;background:#FFA500;opacity:.10"></div>
+      <div class="blob" style="width:240px;height:240px;top:38%;left:12%;background:#FF0000;opacity:.08"></div>
+    </div>
+    <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-[110px] mb-4 animate-[float_3s_ease-in-out_infinite] reveal">🛡️</div>
+      <div class="text-sm uppercase tracking-[0.35em] text-text-muted mb-4 reveal">ITWeb Security Summit 2026 · Johannesburg</div>
+      <h1 class="font-display text-[clamp(2.4rem,5vw,4.8rem)] font-black bg-linear-to-br from-accent-1 via-accent-2 to-accent-1 bg-clip-text text-transparent tracking-tight mb-4 reveal">Hybrid cyber and information operations</h1>
+      <p class="text-[clamp(1rem,1.8vw,1.45rem)] text-text-secondary max-w-[900px] mx-auto reveal">How attackers blend disruption, extortion, deception, and narrative warfare in 2026</p>
+      <p class="mt-6 text-[clamp(.85rem,1.2vw,1rem)] uppercase tracking-[0.28em] text-text-muted reveal">A 30-minute plenary keynote for security leaders</p>
+    </div>
+  </div>
+
+  <div class="slide slide-2" data-slide="2">
+    <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-60px;right:-40px;background:#00FF41;opacity:.08"></div><div class="blob" style="width:250px;height:250px;bottom:-50px;left:-30px;background:#FFA500;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-5xl font-bold mb-8 reveal">Agenda</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="flex gap-4 items-start"><div class="w-10 h-10 rounded-full bg-linear-to-br from-accent-1 to-accent-2 text-black font-bold flex items-center justify-center">1</div><div><h3 class="text-xl font-semibold mb-2">Why hybridisation matters now</h3><p class="small text-text-secondary">The 2026 threat picture, EEAS trendline, and why cyber and influence are converging.</p></div></div></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="flex gap-4 items-start"><div class="w-10 h-10 rounded-full bg-linear-to-br from-accent-1 to-accent-2 text-black font-bold flex items-center justify-center">2</div><div><h3 class="text-xl font-semibold mb-2">Attack types and protagonists</h3><p class="small text-text-secondary">Hack-and-leak, double extortion, CIB, deepfake fraud, patriotic hacktivism, and proxy ecosystems.</p></div></div></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="flex gap-4 items-start"><div class="w-10 h-10 rounded-full bg-linear-to-br from-accent-1 to-accent-2 text-black font-bold flex items-center justify-center">3</div><div><h3 class="text-xl font-semibold mb-2">Drivers</h3><p class="small text-text-secondary">Geopolitical, economic, and technical conditions that make blended campaigns attractive.</p></div></div></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="flex gap-4 items-start"><div class="w-10 h-10 rounded-full bg-linear-to-br from-accent-1 to-accent-2 text-black font-bold flex items-center justify-center">4</div><div><h3 class="text-xl font-semibold mb-2">Africa and South Africa</h3><p class="small text-text-secondary">What is distinctive on the continent, and why South Africa is a three-front case study.</p></div></div></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="flex gap-4 items-start"><div class="w-10 h-10 rounded-full bg-linear-to-br from-accent-1 to-accent-2 text-black font-bold flex items-center justify-center">5</div><div><h3 class="text-xl font-semibold mb-2">Human harm</h3><p class="small text-text-secondary">From health rumours and xenophobic violence to scams, faith-mediated harms, and community tension.</p></div></div></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="flex gap-4 items-start"><div class="w-10 h-10 rounded-full bg-linear-to-br from-accent-1 to-accent-2 text-black font-bold flex items-center justify-center">6</div><div><h3 class="text-xl font-semibold mb-2">Responses and action</h3><p class="small text-text-secondary">What multilateral actors, governments, firms, civil society, and community leaders can do next.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-3" data-slide="3">
+    <div class="gradient-mesh"><div class="blob" style="width:400px;height:400px;top:-100px;right:-80px;background:#00FF41;opacity:.10"></div><div class="blob" style="width:260px;height:260px;bottom:-70px;left:-40px;background:#FF0000;opacity:.07"></div></div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-sm uppercase tracking-[0.32em] text-text-muted mb-4 reveal">Framing slide</div>
+      <h2 class="font-display text-[clamp(2.6rem,5vw,4.4rem)] font-bold mb-6 reveal">The key shift in 2026</h2>
+      <p class="text-2xl max-w-[980px] mx-auto text-text-secondary reveal">Attackers no longer choose between <span class="text-accent-1 font-semibold">breaching systems</span> and <span class="text-accent-2 font-semibold">shaping perception</span>. They do both — or design one to enable the other.</p>
+      <div class="grid grid-cols-3 gap-6 mt-12">
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="text-5xl stat-glow font-extrabold mb-2">540</div><div class="uppercase tracking-[0.18em] tiny text-text-muted">EEAS FIMI incidents in 2025</div></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="text-5xl stat-glow font-extrabold mb-2">10,500</div><div class="uppercase tracking-[0.18em] tiny text-text-muted">Channels and websites mobilised</div></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><div class="text-5xl stat-glow font-extrabold mb-2">3</div><div class="uppercase tracking-[0.18em] tiny text-text-muted">Top trends: hybridisation, AI, covertness</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-4" data-slide="4">
+    <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-80px;right:-80px;background:#FFA500;opacity:.09"></div><div class="blob" style="width:210px;height:210px;bottom:-40px;left:-40px;background:#00FF41;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">The taxonomy used in this keynote</h2>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-7 hover:-translate-y-1 hover:shadow-xl transition reveal">
+          <div class="text-3xl mb-3">①</div><h3 class="text-2xl font-semibold mb-3">Cyber-enabled influence</h3><p class="small text-text-secondary">A cyber operation serves an influence goal: hack-and-leak, symbolic defacement, coerced disclosure, breach claims, stolen data repurposed for narrative effect.</p>
+        </div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-7 hover:-translate-y-1 hover:shadow-xl transition reveal">
+          <div class="text-3xl mb-3">②</div><h3 class="text-2xl font-semibold mb-3">Influence-enabled cyber</h3><p class="small text-text-secondary">Deception enables the intrusion: impersonation, fake recruiters, deepfake executives, spoofed journalists, or false pretexts that open the door.</p>
+        </div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-7 hover:-translate-y-1 hover:shadow-xl transition reveal">
+          <div class="text-3xl mb-3">③</div><h3 class="text-2xl font-semibold mb-3">Parallel cyber–influence</h3><p class="small text-text-secondary">The same actor runs cyber and influence operations simultaneously, even if the two tracks are operationally independent.</p>
+        </div>
+      </div>
+      <div class="mt-8 border-l-4 border-accent-2 pl-5 text-text-secondary reveal">A practical distinction matters throughout: a <span class="text-accent-1 font-semibold">strict</span> definition requires an unauthorised intrusion; a <span class="text-accent-2 font-semibold">broader</span> definition includes pure influence operations with no intrusion component.</div>
+    </div>
+  </div>
+
+  <div class="slide slide-5" data-slide="5">
+    <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-50px;right:10%;background:#00FF41;opacity:.08"></div><div class="blob" style="width:280px;height:280px;bottom:-60px;left:-40px;background:#FFA500;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-4 reveal">What is most prevalent?</h2>
+      <p class="text-lg text-text-secondary mb-8 reveal">The answer changes depending on whether we count only intrusion-linked operations or the wider field of manipulation.</p>
+      <div class="grid grid-cols-2 gap-8 items-center">
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal">
+          <h3 class="text-2xl font-semibold mb-5">Strict definition</h3>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="text-sm text-text-muted">Double extortion</div><div class="bar bg-linear-to-t from-accent-1 to-accent-2" data-height="88"></div><div class="tiny text-text-secondary">Most common</div></div>
+            <div class="bar-col"><div class="text-sm text-text-muted">Hack-and-leak</div><div class="bar bg-linear-to-t from-accent-1 to-accent-2" data-height="55"></div><div class="tiny text-text-secondary">High impact</div></div>
+            <div class="bar-col"><div class="text-sm text-text-muted">Defacement</div><div class="bar bg-linear-to-t from-accent-1 to-accent-2" data-height="38"></div><div class="tiny text-text-secondary">Symbolic</div></div>
+            <div class="bar-col"><div class="text-sm text-text-muted">Deepfake-enabled BEC</div><div class="bar bg-linear-to-t from-accent-1 to-accent-2" data-height="44"></div><div class="tiny text-text-secondary">Fastest growth</div></div>
+          </div>
+        </div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal">
+          <h3 class="text-2xl font-semibold mb-5">Broader definition</h3>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="text-sm text-text-muted">CIB / fake assets</div><div class="bar bg-linear-to-t from-accent-2 to-accent-3" data-height="92"></div><div class="tiny text-text-secondary">State-favoured</div></div>
+            <div class="bar-col"><div class="text-sm text-text-muted">Hate / incitement</div><div class="bar bg-linear-to-t from-accent-2 to-accent-3" data-height="73"></div><div class="tiny text-text-secondary">Community harm</div></div>
+            <div class="bar-col"><div class="text-sm text-text-muted">Scam narratives</div><div class="bar bg-linear-to-t from-accent-2 to-accent-3" data-height="81"></div><div class="tiny text-text-secondary">Mass fraud</div></div>
+            <div class="bar-col"><div class="text-sm text-text-muted">Health rumours</div><div class="bar bg-linear-to-t from-accent-2 to-accent-3" data-height="77"></div><div class="tiny text-text-secondary">Most lethal offline</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-6" data-slide="6">
+    <div class="gradient-mesh"><div class="blob" style="width:360px;height:360px;top:-80px;right:-70px;background:#00FF41;opacity:.08"></div><div class="blob" style="width:260px;height:260px;bottom:-80px;left:5%;background:#FF0000;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">Under what conditions do these attacks appear?</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Election and legitimacy crises</h3><p class="small text-text-secondary">Hack-and-leak, fake polling, manipulated media, and troll amplification spike when actors need to delegitimise institutions, fracture coalitions, or depress turnout.</p></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Hot conflict and wartime mobilisation</h3><p class="small text-text-secondary">Patriotic hacktivism, symbolic defacement, breach claims, and CIB surge when states and proxies seek morale effects, recruitment, or deniable escalation.</p></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Economic distress and low resilience</h3><p class="small text-text-secondary">Double-extortion ransomware, fake jobs, APP fraud, and impersonation campaigns thrive where unemployment, weak controls, and data scarcity make people easy to coerce or deceive.</p></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Information vacuums and trust collapse</h3><p class="small text-text-secondary">Health rumours, xenophobic narratives, climate misinformation, and community incitement spread fastest where official communication is slow, distrusted, or absent.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-7" data-slide="7">
+    <div class="gradient-mesh"><div class="blob" style="width:380px;height:380px;top:-80px;right:-60px;background:#FFA500;opacity:.09"></div><div class="blob" style="width:220px;height:220px;bottom:-40px;left:-30px;background:#00FF41;opacity:.07"></div></div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-sm uppercase tracking-[0.32em] text-text-muted mb-4 reveal">The protagonists</div>
+      <h2 class="font-display text-[clamp(2.4rem,4.5vw,4.2rem)] font-bold mb-6 reveal">Five actor classes are converging</h2>
+      <div class="grid grid-cols-5 gap-4 mt-10">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-4 reveal"><div class="text-4xl mb-2">🏛️</div><div class="font-semibold">State agencies</div><div class="tiny text-text-muted mt-2">GRU, SVR, IRGC</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-4 reveal"><div class="text-4xl mb-2">🧠</div><div class="font-semibold">State-linked APTs</div><div class="tiny text-text-muted mt-2">Gamaredon, Lazarus, PLA-linked units</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-4 reveal"><div class="text-4xl mb-2">🕶️</div><div class="font-semibold">Proxies & contractors</div><div class="tiny text-text-muted mt-2">Ghostwriter, Team Jorge, Wagner ecosystems</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-4 reveal"><div class="text-4xl mb-2">⚡</div><div class="font-semibold">Patriotic hacktivists</div><div class="tiny text-text-muted mt-2">NoName057(16), IT Army-style swarms</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-4 reveal"><div class="text-4xl mb-2">💰</div><div class="font-semibold">Criminal groups</div><div class="tiny text-text-muted mt-2">ALPHV, RansomHouse, Scattered Spider</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-8" data-slide="8">
+    <div class="gradient-mesh"><div class="blob" style="width:300px;height:300px;top:-60px;right:-40px;background:#00FF41;opacity:.08"></div><div class="blob" style="width:240px;height:240px;bottom:-50px;left:-20px;background:#FFA500;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">Global drivers: three engines of hybridisation</h2>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-7 reveal"><div class="text-3xl mb-4">🌍</div><h3 class="text-2xl font-semibold mb-3">Geopolitical</h3><p class="small text-text-secondary">Multipolar rivalry, wartime contestation, sanctions pressure, and election interference create demand for deniable operations that blur war, diplomacy, and crime.</p></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-7 reveal"><div class="text-3xl mb-4">📉</div><h3 class="text-2xl font-semibold mb-3">Economic</h3><p class="small text-text-secondary">RaaS industrialisation, extortion monetisation, stock-price sensitivity, and the low cost of narrative attacks make hybrid campaigns efficient and scalable.</p></div>
+        <div class="bg-glass-bg backdrop-blur-xl border border-glass-border rounded-2xl p-7 reveal"><div class="text-3xl mb-4">🤖</div><h3 class="text-2xl font-semibold mb-3">Technical</h3><p class="small text-text-secondary">GenAI, deepfake tooling, cheap spoofing, bulletproof hosting, semi-closed messaging channels, and weak provenance standards lower barriers to entry.</p></div>
+      </div>
+      <div class="mt-8 grid grid-cols-4 gap-4">
+        <div class="bg-surface/70 border border-glass-border rounded-xl p-4 reveal"><div class="text-3xl font-extrabold text-accent-1">50%</div><div class="tiny text-text-muted uppercase tracking-[0.16em]">Enterprises using disinfo security by 2028</div></div>
+        <div class="bg-surface/70 border border-glass-border rounded-xl p-4 reveal"><div class="text-3xl font-extrabold text-accent-1">79%</div><div class="tiny text-text-muted uppercase tracking-[0.16em]">Enterprises hit by MDM in 3 years</div></div>
+        <div class="bg-surface/70 border border-glass-border rounded-xl p-4 reveal"><div class="text-3xl font-extrabold text-accent-1">45%</div><div class="tiny text-text-muted uppercase tracking-[0.16em]">CCOs expected to adopt NI by 2029</div></div>
+        <div class="bg-surface/70 border border-glass-border rounded-xl p-4 reveal"><div class="text-3xl font-extrabold text-accent-1">$39B</div><div class="tiny text-text-muted uppercase tracking-[0.16em]">Annual stock losses from fake news</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-9" data-slide="9">
+    <div class="gradient-mesh"><div class="blob" style="width:340px;height:340px;top:-50px;right:-50px;background:#FF0000;opacity:.08"></div><div class="blob" style="width:260px;height:260px;bottom:-60px;left:5%;background:#00FF41;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">Africa: a different operational environment</h2>
+      <div class="grid grid-cols-2 gap-8 items-center">
+        <div class="reveal">
+          <table class="matrix w-full text-left small bg-glass-bg backdrop-blur-xl rounded-2xl overflow-hidden">
+            <tr><th>Driver</th><th>Why it matters in Africa</th></tr>
+            <tr><td>Low information access</td><td>Only about 38% internet penetration continent-wide; online rumours jump into radio, churches, and word of mouth.</td></tr>
+            <tr><td>Linguistic diversity</td><td>Fact-checking tools and moderation lag badly in local languages; manipulators exploit this gap.</td></tr>
+            <tr><td>Trust asymmetry</td><td>Faith leaders, local broadcasters, and informal influencers often outrank institutions in credibility.</td></tr>
+            <tr><td>Fragility and conflict</td><td>Rumours about violence, disease, aid, and ethnic threat can trigger death within hours.</td></tr>
+            <tr><td>High data costs</td><td>Verification is expensive; forwarding a rumour is cheap.</td></tr>
+          </table>
+        </div>
+        <div class="space-y-5">
+          <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-2">Conflict theatre</h3><p class="small text-text-secondary">Sahel, DRC, Sudan, Ethiopia, and parts of West Africa show how false narratives and cyber claims become force multipliers for insecurity.</p></div>
+          <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-2">Commercialised manipulation</h3><p class="small text-text-secondary">Election consultancies, troll farms, paid-influencer ecosystems, and scam operators adapt quickly to local political and economic demand.</p></div>
+          <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-2">Offline harms dominate</h3><p class="small text-text-secondary">Health disinformation, xenophobia, and community rumours often cause more direct physical harm than elite-focused FIMI cases.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-10" data-slide="10">
+    <div class="gradient-mesh"><div class="blob" style="width:350px;height:350px;top:-80px;right:-60px;background:#FFA500;opacity:.10"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-30px;background:#00FF41;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">South Africa: one country, three simultaneous battles</h2>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-4xl mb-3">💣</div><h3 class="text-2xl font-semibold mb-3">Criminal hybrid attacks</h3><p class="small text-text-secondary">Ransomware and extortion dominate the strict-definition dataset. South Africa remains one of the continent's highest-value targets.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-4xl mb-3">🌐</div><h3 class="text-2xl font-semibold mb-3">Foreign narrative pressure</h3><p class="small text-text-secondary">BRICS positioning, the ICJ Gaza case, and geopolitical non-alignment make South Africa a high-value narrative battleground.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-4xl mb-3">🔥</div><h3 class="text-2xl font-semibold mb-3">Domestic social harm</h3><p class="small text-text-secondary">Xenophobic disinformation, scam ecosystems, and faith-mediated health misinformation directly affect ordinary communities.</p></div>
+      </div>
+      <div class="grid grid-cols-4 gap-4 mt-8">
+        <div class="bg-surface/70 border border-glass-border rounded-xl p-4 reveal"><div class="text-3xl font-extrabold text-accent-1">77%</div><div class="tiny text-text-muted uppercase tracking-[0.16em]">Adults encountered a scam</div></div>
+        <div class="bg-surface/70 border border-glass-border rounded-xl p-4 reveal"><div class="text-3xl font-extrabold text-accent-1">42%</div><div class="tiny text-text-muted uppercase tracking-[0.16em]">Reported losing money</div></div>
+        <div class="bg-surface/70 border border-glass-border rounded-xl p-4 reveal"><div class="text-3xl font-extrabold text-accent-1">5</div><div class="tiny text-text-muted uppercase tracking-[0.16em]">Ethiopian nationals killed in Apr 2026 attacks</div></div>
+        <div class="bg-surface/70 border border-glass-border rounded-xl p-4 reveal"><div class="text-3xl font-extrabold text-accent-1">7.8M</div><div class="tiny text-text-muted uppercase tracking-[0.16em]">People living with HIV in South Africa</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-11" data-slide="11">
+    <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-70px;right:-60px;background:#00FF41;opacity:.09"></div><div class="blob" style="width:210px;height:210px;bottom:-40px;left:-20px;background:#FFA500;opacity:.06"></div></div>
+    <div class="content">
+      <div class="text-sm uppercase tracking-[0.30em] text-text-muted mb-4 reveal">Strict definition</div>
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">When a breach serves the narrative</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Double extortion ransomware</h3><p class="small text-text-secondary">Criminal groups no longer just encrypt. They steal, threaten to leak, time disclosures for maximum pressure, and weaponise public shame.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Hack-and-leak</h3><p class="small text-text-secondary">Selective theft and timed release are used to alter political perception, discredit targets, or create strategic ambiguity.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Symbolic defacement</h3><p class="small text-text-secondary">Hacktivists and proxies seek psychological effect more than access persistence: visibility, embarrassment, deterrence theatre.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Deepfake-enabled business intrusion</h3><p class="small text-text-secondary">Synthetic media bypasses trust in identity verification and real-time communications, turning influence into financial breach enablement.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-12" data-slide="12">
+    <div class="gradient-mesh"><div class="blob" style="width:350px;height:350px;top:-90px;right:-70px;background:#FF0000;opacity:.08"></div><div class="blob" style="width:250px;height:250px;bottom:-60px;left:-20px;background:#FFA500;opacity:.06"></div></div>
+    <div class="content">
+      <div class="text-sm uppercase tracking-[0.30em] text-text-muted mb-4 reveal">Broader definition</div>
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">When there is no intrusion — but the harm is real</h2>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-xl font-semibold mb-3">Coordinated inauthentic behaviour</h3><p class="small text-text-secondary">Fake personas, page networks, bot support, and cross-platform laundering of narratives.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-xl font-semibold mb-3">Narrative attacks on brands and elites</h3><p class="small text-text-secondary">Boycott pressure, false claims, executive impersonation, sentiment manipulation, and reputational targeting.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-xl font-semibold mb-3">Community-targeted harms</h3><p class="small text-text-secondary">Health rumours, xenophobic incitement, fake jobs, miracle cures, and local-language hate speech.</p></div>
+      </div>
+      <div class="mt-8 border-l-4 border-accent-1 pl-5 text-text-secondary reveal">This broader field is strategically vital because it has been <span class="text-accent-2 font-semibold">democratised</span>: domestic politicians, contractors, influencers, preachers, scammers, and activists can all play.</div>
+    </div>
+  </div>
+
+  <div class="slide slide-13" data-slide="13">
+    <div class="gradient-mesh"><div class="blob" style="width:360px;height:360px;top:-80px;right:-60px;background:#00FF41;opacity:.08"></div><div class="blob" style="width:220px;height:220px;bottom:-30px;left:-30px;background:#FFA500;opacity:.05"></div></div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-sm uppercase tracking-[0.30em] text-text-muted mb-4 reveal">Pivot to ordinary Africans</div>
+      <h2 class="font-display text-[clamp(2.3rem,4.6vw,4rem)] font-bold mb-6 reveal">The deadliest harms in Africa are often not elite harms</h2>
+      <p class="text-2xl text-text-secondary max-w-[980px] mx-auto reveal">The most dangerous information threats on the continent are often <span class="text-accent-1 font-semibold">health rumours</span>, <span class="text-accent-2 font-semibold">community incitement</span>, <span class="text-accent-3 font-semibold">xenophobic hate</span>, and <span class="text-accent-1 font-semibold">mass scam narratives</span> — not just FIMI against capitals and boardrooms.</p>
+    </div>
+  </div>
+
+  <div class="slide slide-14" data-slide="14">
+    <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-80px;right:-80px;background:#00FF41;opacity:.08"></div><div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#FF0000;opacity:.07"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">Real-world harm categories that matter most</h2>
+      <div class="grid grid-cols-3 gap-5">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-5 reveal"><div class="text-3xl mb-2">🏥</div><div class="font-semibold mb-2">Health misinformation</div><div class="tiny text-text-secondary">Miracle cures, anti-vaccine narratives, disease rumours, ARV abandonment, attacks on health workers.</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-5 reveal"><div class="text-3xl mb-2">⚔️</div><div class="font-semibold mb-2">Conflict-triggering rumours</div><div class="tiny text-text-secondary">False atrocity videos, ethnic panic, manipulated community narratives, forced displacement.</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-5 reveal"><div class="text-3xl mb-2">🚷</div><div class="font-semibold mb-2">Xenophobic hate speech</div><div class="tiny text-text-secondary">False crime/job narratives, anti-migrant mobilisation, denial of services, vigilante action.</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-5 reveal"><div class="text-3xl mb-2">👩</div><div class="font-semibold mb-2">Gendered disinformation</div><div class="tiny text-text-secondary">Harassment, GBV-enabling myths, menstrual disinformation, LGBTQ+ incitement.</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-5 reveal"><div class="text-3xl mb-2">🌦️</div><div class="font-semibold mb-2">Climate and agricultural falsehoods</div><div class="tiny text-text-secondary">Bad weather advice, anti-science narratives, misinformation blocking adaptation.</div></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-5 reveal"><div class="text-3xl mb-2">💸</div><div class="font-semibold mb-2">Fraud and scams</div><div class="tiny text-text-secondary">Fake jobs, fake grants, APP fraud, romance scams, investment fraud, impersonation.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-15" data-slide="15">
+    <div class="gradient-mesh"><div class="blob" style="width:360px;height:360px;top:-80px;right:-70px;background:#00FF41;opacity:.09"></div><div class="blob" style="width:260px;height:260px;bottom:-60px;left:4%;background:#FFA500;opacity:.07"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">A stark health example from the DRC</h2>
+      <div class="grid grid-cols-2 gap-8 items-center">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-7 reveal">
+          <div class="text-7xl font-extrabold stat-glow mb-2" data-count="17">0</div>
+          <div class="uppercase tracking-[0.18em] tiny text-text-muted">Deaths linked to one genital-atrophy rumour in 2025</div>
+          <div class="mt-8 text-7xl font-extrabold stat-glow mb-2" data-count="4">0</div>
+          <div class="uppercase tracking-[0.18em] tiny text-text-muted">Health workers killed by mobs</div>
+        </div>
+        <div class="space-y-5">
+          <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-2">Why it matters</h3><p class="small text-text-secondary">The incident shows how rumours move from social media into churches, local media, and communities — then become physical violence before any fact-check can catch up.</p></div>
+          <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-2">The keynote lesson</h3><p class="small text-text-secondary">If your response model is only digital, you will miss the last-mile amplifiers that make information lethal.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-16" data-slide="16">
+    <div class="gradient-mesh"><div class="blob" style="width:340px;height:340px;top:-70px;right:-50px;background:#FF0000;opacity:.09"></div><div class="blob" style="width:240px;height:240px;bottom:-50px;left:-20px;background:#FFA500;opacity:.07"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">South Africa's community harm profile</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Xenophobic disinformation</h3><p class="small text-text-secondary">False claims about migrant criminality, jobs, and service access have repeatedly been linked to offline intimidation and violence. Courts have intervened, but the narratives persist.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Faith-mediated health harm</h3><p class="small text-text-secondary">ARV abandonment and miracle-healing claims remain dangerous because they exploit trust, stigma, and economic vulnerability.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Mass scam exposure</h3><p class="small text-text-secondary">Fraud against ordinary households is one of the country's most pervasive information threats and now requires banking-telco fusion responses.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Platform complexity</h3><p class="small text-text-secondary">Real and fake videos circulate simultaneously, making public communication, attribution, and trust restoration much harder during crises.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-17" data-slide="17">
+    <div class="gradient-mesh"><div class="blob" style="width:360px;height:360px;top:-90px;right:-60px;background:#00FF41;opacity:.09"></div><div class="blob" style="width:260px;height:260px;bottom:-60px;left:-40px;background:#FFA500;opacity:.07"></div></div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-sm uppercase tracking-[0.30em] text-text-muted mb-4 reveal">Response architecture</div>
+      <h2 class="font-display text-[clamp(2.4rem,4.6vw,4.1rem)] font-bold mb-6 reveal">There is no one-size-fits-all countermeasure</h2>
+      <p class="text-2xl text-text-secondary max-w-[960px] mx-auto reveal">The right response depends on <span class="text-accent-1 font-semibold">who is being protected</span> and <span class="text-accent-2 font-semibold">how much information access exists</span>.</p>
+    </div>
+  </div>
+
+  <div class="slide slide-18" data-slide="18">
+    <div class="gradient-mesh"><div class="blob" style="width:350px;height:350px;top:-80px;right:-60px;background:#00FF41;opacity:.08"></div><div class="blob" style="width:220px;height:220px;bottom:-40px;left:-30px;background:#FFA500;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-6 reveal">The 2×2 response matrix</h2>
+      <table class="matrix w-full small bg-glass-bg backdrop-blur-xl rounded-2xl overflow-hidden reveal">
+        <tr>
+          <th style="width:18%"></th>
+          <th style="width:41%">Elite / institutional protection</th>
+          <th style="width:41%">Ordinary people / community protection</th>
+        </tr>
+        <tr>
+          <th>High information access</th>
+          <td>Disinformation security, NI tooling, deepfake detection, court action, platform accountability, independent fact-checking, Scam Signal-style fraud fusion.</td>
+          <td>Media literacy, prebunking, influencer partnerships, rapid reporting hotlines, scam awareness, community verification habits.</td>
+        </tr>
+        <tr>
+          <th>Low information access</th>
+          <td>Regional norms, broadcaster accountability, offline journalist support, health-rumour monitoring, protection for fact-checkers and health workers.</td>
+          <td>Faith leader engagement, community radio corrections, oral/local-language literacy, school and clinic outreach, peer-to-peer health and scam resilience.</td>
+        </tr>
+      </table>
+      <div class="mt-6 text-text-secondary reveal">The most discussed global solutions mostly fit the top-left box. The most life-saving African interventions often sit in the bottom row.</div>
+    </div>
+  </div>
+
+  <div class="slide slide-19" data-slide="19">
+    <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-70px;right:-60px;background:#FFA500;opacity:.09"></div><div class="blob" style="width:220px;height:220px;bottom:-30px;left:-20px;background:#00FF41;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">What multilateral and institutional actors are doing</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">EEAS / EU</h3><p class="small text-text-secondary">Moving from diagnosis to deterrence: FIMI mapping, disruption of enabling infrastructure, DSA enforcement, and content provenance standards.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">UNESCO / AU / ECOWAS</h3><p class="small text-text-secondary">Guidelines for information integrity on platforms, model policy work, multilingual resilience approaches, and regional journalist training.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">WHO and health actors</h3><p class="small text-text-secondary">Rumour hotlines, infodemic response alliances, and trusted-messenger networks for health emergencies.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><h3 class="text-2xl font-semibold mb-3">Courts and oversight bodies</h3><p class="small text-text-secondary">Where political elites are implicated, independent inquiries, courts, watchdogs, and media freedom protections become part of cyber–influence defence.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-20" data-slide="20">
+    <div class="gradient-mesh"><div class="blob" style="width:350px;height:350px;top:-80px;right:-60px;background:#00FF41;opacity:.08"></div><div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#FF0000;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">What firms should do next</h2>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-3xl mb-3">🔐</div><h3 class="text-xl font-semibold mb-2">Treat identity as attack surface</h3><p class="tiny text-text-secondary">Deepfake detection, adaptive trust, and stronger approval workflows for payments, claims, and identity proofing.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-3xl mb-3">📡</div><h3 class="text-xl font-semibold mb-2">Add narrative intelligence</h3><p class="tiny text-text-secondary">Know what is building, who is driving it, how it is mutating across languages, and whether it is organic or engineered.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-3xl mb-3">🧩</div><h3 class="text-xl font-semibold mb-2">Build TrustOps</h3><p class="tiny text-text-secondary">CISO, CCO, legal, marketing, risk, HR, and executive leadership need a single hybrid response playbook.</p></div>
+      </div>
+      <div class="grid grid-cols-3 gap-6 mt-6">
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-3xl mb-3">🗂️</div><h3 class="text-xl font-semibold mb-2">Prepare leak-response playbooks</h3><p class="tiny text-text-secondary">Assume data theft will be used narratively, not just technically; rehearse disclosure, verification, and stakeholder messaging.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-3xl mb-3">🧾</div><h3 class="text-xl font-semibold mb-2">Use provenance where possible</h3><p class="tiny text-text-secondary">C2PA-style content credentials and authenticated media pipelines can reduce synthetic confusion in crisis comms.</p></div>
+        <div class="bg-glass-bg border border-glass-border rounded-2xl p-6 reveal"><div class="text-3xl mb-3">🤝</div><h3 class="text-xl font-semibold mb-2">Share signals externally</h3><p class="tiny text-text-secondary">Sectoral intelligence sharing, bank–telco fusion, and CERT coordination are now reputation and safety issues too.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-21" data-slide="21">
+    <div class="gradient-mesh"><div class="blob" style="width:340px;height:340px;top:-70px;right:-60px;background:#FFA500;opacity:.09"></div><div class="blob" style="width:250px;height:250px;bottom:-50px;left:-25px;background:#00FF41;opacity:.06"></div></div>
+    <div class="content">
+      <h2 class="font-display text-4xl font-bold mb-8 reveal">What community-facing actors should do next</h2>
+      <div class="flex flex-col gap-4">
+        <div class="bg-glass-bg border-l-4 border-accent-1 border border-glass-border rounded-2xl p-5 reveal"><span class="font-semibold">Faith leaders:</span> move from being accidental amplifiers to pre-briefed trusted messengers, especially on health and inter-community tension.</div>
+        <div class="bg-glass-bg border-l-4 border-accent-2 border border-glass-border rounded-2xl p-5 reveal"><span class="font-semibold">Community radio and broadcasters:</span> institutionalise correction segments, local-language verification, and rebuttal rights for harmful rumours.</div>
+        <div class="bg-glass-bg border-l-4 border-accent-3 border border-glass-border rounded-2xl p-5 reveal"><span class="font-semibold">Schools, clinics, and NGOs:</span> deliver oral and visual media literacy, not just digital literacy, in low-access environments.</div>
+        <div class="bg-glass-bg border-l-4 border-accent-1 border border-glass-border rounded-2xl p-5 reveal"><span class="font-semibold">Civil society coalitions:</span> document harm, protect fact-checkers and journalists, and create escalation channels with platforms, regulators, and courts.</div>
+        <div class="bg-glass-bg border-l-4 border-accent-2 border border-glass-border rounded-2xl p-5 reveal"><span class="font-semibold">Banks and mobile operators:</span> fuse scam detection with public education, especially where fraud is routed through messaging apps and social engineering.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-22" data-slide="22">
+    <div class="gradient-mesh"><div class="blob" style="width:360px;height:360px;top:-90px;right:-80px;background:#00FF41;opacity:.10"></div><div class="blob" style="width:280px;height:280px;bottom:-80px;left:-60px;background:#FFA500;opacity:.09"></div><div class="blob" style="width:220px;height:220px;top:46%;left:14%;background:#FF0000;opacity:.08"></div></div>
+    <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-[110px] mb-4 animate-[float_3s_ease-in-out_infinite] reveal">📍</div>
+      <h2 class="font-display text-[clamp(2.4rem,4.8vw,4.4rem)] font-bold bg-linear-to-br from-accent-1 via-accent-2 to-accent-1 bg-clip-text text-transparent mb-5 reveal">The keynote takeaway</h2>
+      <p class="text-[clamp(1.1rem,1.8vw,1.5rem)] max-w-[980px] mx-auto text-text-secondary reveal">In 2026, cyber defence without narrative defence is incomplete — and narrative defence without community trust is fragile.</p>
+      <p class="mt-8 text-[clamp(.9rem,1.2vw,1rem)] uppercase tracking-[0.28em] text-text-muted reveal">Protect systems. Protect trust. Protect people.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav-controls">
+  <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
+  <div class="slide-dots" id="dots"></div>
+  <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+  <span class="slide-counter" id="counter">1 / N</span>
+</div>
+
+<script>
+let current = 1;
+const total = document.querySelectorAll('.slide').length;
+const dotsContainer = document.getElementById('dots');
+const counter = document.getElementById('counter');
+for (let i = 1; i <= total; i++) { const dot = document.createElement('div'); dot.className = 'dot' + (i === 1 ? ' active' : ''); dot.onclick = () => goToSlide(i); dotsContainer.appendChild(dot); }
+function goToSlide(n) { const prev = document.querySelector('.slide.active'); const next = document.querySelector(`.slide[data-slide="${n}"]`); if (prev) prev.classList.remove('active'); if (next) { next.classList.add('active'); animateSlide(next); } current = n; updateNav(); }
+function changeSlide(dir) { let next = current + dir; if (next < 1) next = total; if (next > total) next = 1; goToSlide(next); }
+function updateNav() { document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === current)); counter.textContent = current + ' / ' + total; }
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); } });
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => { const diff = touchStartX - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1); });
+function animateSlide(slide) {
+  slide.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transition = 'none'; el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.offsetHeight;
+    const delay = i * 0.08;
+    el.style.transition = `opacity 0.35s ease ${delay}s, transform 0.35s ease ${delay}s`;
+    el.style.opacity = '1'; el.style.transform = 'translateY(0px)';
+  });
+  animateSlideEffects(slide);
+}
+function animateSlideEffects(slide) {
+  slide.querySelectorAll('[data-count]:not(.counted)').forEach(el => {
+    el.classList.add('counted');
+    const target = parseInt(el.dataset.count); let cur = 0; const step = target / 40;
+    const timer = setInterval(() => { cur += step; if (cur >= target) { cur = target; clearInterval(timer); } el.textContent = Math.round(cur).toLocaleString(); }, 30);
+  });
+  slide.querySelectorAll('.bar-chart:not(.bar-init)').forEach(chart => {
+    chart.classList.add('bar-init');
+    chart.querySelectorAll('.bar').forEach((bar, i) => { bar.style.height = '0%'; bar.style.transition = `height 0.5s ease ${i * 0.06}s`; bar.offsetHeight; bar.style.height = bar.dataset.height + '%'; });
+  });
+  slide.querySelectorAll('.bar-fill:not(.fill-init)').forEach((bar, i) => { bar.classList.add('fill-init'); bar.style.width = '0%'; bar.style.transition = `width 0.5s ease ${i * 0.08}s`; bar.offsetHeight; bar.style.width = bar.dataset.width + '%'; });
+}
+document.addEventListener('mousemove', (e) => {
+  const spotlight = document.querySelector('.mouse-spotlight');
+  if (spotlight) spotlight.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(0,255,65,0.06), transparent 40%)`;
+});
+(function() {
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+  document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+  (function tick() {
+    const ox = (mouseX - cx) / cx, oy = (mouseY - cy) / cy;
+    document.querySelectorAll('.deco-shape').forEach(shape => { const speed = parseFloat(shape.dataset.speed) || 0.03; shape.style.transform = `translate(${ox * speed * 100}px, ${oy * speed * 100}px)`; });
+    requestAnimationFrame(tick);
+  })();
+})();
+window.initParticles = function(canvas, options) {
+  if (!canvas) return; const ctx = canvas.getContext('2d'); canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+  const interactive = options.interactive !== false; const count = options.count || (interactive ? 55 : 18); let mx = -1000, my = -1000;
+  const particles = Array.from({ length: count }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, size: Math.random() * 2.5 + 0.8, alpha: Math.random() * 0.35 + 0.1 }));
+  if (interactive) { canvas.addEventListener('mousemove', (e) => { const rect = canvas.getBoundingClientRect(); mx = e.clientX - rect.left; my = e.clientY - rect.top; }); canvas.addEventListener('mouseleave', () => { mx = -1000; my = -1000; }); }
+  (function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { if (interactive) { const dx = p.x - mx, dy = p.y - my, dist = Math.sqrt(dx*dx+dy*dy) || 1; if (dist < 120) { const force = (120 - dist) / 120 * 2; p.vx += (dx / dist) * force * 0.1; p.vy += (dy / dist) * force * 0.1; } } p.vx *= 0.98; p.vy *= 0.98; p.x += p.vx; p.y += p.vy; if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0; if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(0,255,65,${p.alpha})`; ctx.fill(); }); requestAnimationFrame(animate); })();
+};
+document.querySelectorAll('.particle-canvas').forEach(c => window.initParticles(c, { interactive: true, count: 55 }));
+document.querySelectorAll('.particle-canvas-ambient').forEach(c => window.initParticles(c, { interactive: false, count: 18 }));
+try { animateSlide(document.querySelector('.slide.active')); } catch(e) {}
+</script>
+</body>
+</html>
