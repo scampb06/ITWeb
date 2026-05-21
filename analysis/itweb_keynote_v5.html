@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="slides-format" content="viewport">
+    <title>Hybrid Cyber &amp; Information Operations 2026 — ITWeb Security Summit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-bg: #0a0f1e;
+            --color-bg-deep: #050810;
+            --color-surface: #111827;
+            --color-text: #f1f5f9;
+            --color-text-secondary: #cbd5e1;
+            --color-text-muted: #94a3b8;
+            --color-accent-1: #e63946;
+            --color-accent-2: #f4a261;
+            --color-accent-3: #457b9d;
+            --color-glass-bg: rgba(255,255,255,0.06);
+            --color-glass-border: rgba(255,255,255,0.10);
+            --color-vignette: rgba(0,0,0,0.45);
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+        }
+    </style>
+    <style>
+        :root { --color-bg: #0a0f1e; --color-text: #f1f5f9; --glow-color-rgb: 230,57,70; }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { background: var(--color-bg); margin: 0; }
+        body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--color-text); overflow: hidden; height: 100vh; width: 100vw; }
+        .deck { width: 100vw; height: 100vh; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transform: scale(0.95); transition: opacity 0.7s ease, transform 0.7s ease; pointer-events: none; overflow: hidden; }
+        .slide.active { opacity: 1; transform: scale(1); pointer-events: all; }
+        .slide > .content { position: relative; z-index: 2; width: 100%; max-width: 1100px; padding: clamp(1.2rem, 3vw, 3.5rem); }
+        .nav-controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; z-index: 100; background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); padding: 8px 20px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.10); }
+        .nav-btn { width: 36px; height: 36px; border: none; background: rgba(255,255,255,0.08); color: #e63946; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.15); }
+        .slide-dots { display: flex; gap: 7px; }
+        .slide-dots .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+        .slide-dots .dot.active { background: #e63946; transform: scale(1.35); }
+        .slide-counter { font-size: 0.75rem; color: #94a3b8; min-width: 36px; text-align: center; }
+        .reveal { opacity: 0; transform: translateY(18px); }
+        .text-glow { text-shadow: 0 0 20px rgba(230,57,70,0.5), 0 0 40px rgba(230,57,70,0.2); }
+        @keyframes glow-pulse { 0%,100%{text-shadow:0 0 20px rgba(230,57,70,0.5),0 0 40px rgba(230,57,70,0.2);} 50%{text-shadow:0 0 30px rgba(230,57,70,0.9),0 0 60px rgba(230,57,70,0.35);} }
+        .glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+        @keyframes float-slow{0%{transform:translate(0,0) scale(1);}25%{transform:translate(60px,-50px) scale(1.1);}50%{transform:translate(-40px,40px) scale(0.9);}75%{transform:translate(50px,20px) scale(1.08);}100%{transform:translate(0,0) scale(1);}}
+        @keyframes float-drift{0%{transform:translate(0,0) scale(1) rotate(0deg);}33%{transform:translate(-50px,-60px) scale(1.15) rotate(3deg);}66%{transform:translate(40px,30px) scale(0.88) rotate(-2deg);}100%{transform:translate(0,0) scale(1) rotate(0deg);}}
+        @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+        .gradient-mesh{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+        .blob{position:absolute;border-radius:50%;filter:blur(80px);animation:float-slow 12s ease-in-out infinite;}
+        .blob:nth-child(2){animation:float-drift 16s ease-in-out infinite;}
+        .blob:nth-child(3){animation:float-slow 20s ease-in-out infinite reverse;}
+        .slide::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:256px;opacity:0.03;mix-blend-mode:overlay;}
+        .slide::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,var(--color-vignette) 100%);}
+        .bar-track{background:rgba(255,255,255,0.08);border-radius:4px;height:14px;width:100%;overflow:hidden;}
+        .bar-fill{height:100%;border-radius:4px;width:0%;transition:width 0.8s ease;}
+        .notes-panel{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);max-width:780px;width:92%;background:rgba(5,8,16,0.94);border:1px solid rgba(230,57,70,0.3);border-radius:12px;padding:14px 18px;font-size:0.72rem;color:#94a3b8;line-height:1.55;z-index:200;display:none;max-height:220px;overflow-y:auto;}
+        .notes-panel strong{color:#f4a261;}
+        #notes-toggle{position:fixed;bottom:70px;right:20px;z-index:201;background:rgba(230,57,70,0.15);border:1px solid rgba(230,57,70,0.4);color:#e63946;border-radius:8px;padding:6px 12px;font-size:0.72rem;cursor:pointer;font-family:inherit;}
+    </style>
+</head>
+<body>
+<div class="mouse-spotlight" style="position:fixed;inset:0;z-index:99;pointer-events:none;"></div>
+<button id="notes-toggle" onclick="toggleNotes()">📝 Speaker Notes</button>
+<div class="notes-panel" id="notes-panel"></div>
+<div class="deck">
+
+<!-- ═══ SLIDE 1 — TITLE ═══ -->
+<div class="slide slide-1 active" data-slide="1" data-notes="<strong>ITWeb Security Summit 2026 — Johannesburg.</strong> Welcome delegates. This talk draws on a structured dataset of 80+ hybrid cyber-influence incidents from six continents, cross-referenced with EEAS FIMI reports, Mandiant, Microsoft MSTIC, and academic sources. The central argument: we have systematically under-counted the threat by focusing only on 'disinformation' when the actual attack surface spans four distinct weaponisation modes. | <strong>Timing plan for 30 minutes (19 slides):</strong> <strong>19-slide deck · 30-minute keynote. Pace guide:</strong> <em>Act 1 — Global Landscape (~12 min):</em> S1 Title 1min · S2 Agenda 1min · S3 OASIS framing 2min · S4 Three Modes 1.5min · S5 Prevalent types 2min · S6 Triggers 1.5min · S7 Protagonists 1.5min · S8 Landmark cases 2min · S9 Drivers 1.5min · S10 AI 1.5min. <em>Act 2 — Africa &amp; South Africa (~10 min):</em> S11 Africa environment 2min · S12 Real-world harm 3min (slow down — this is the human cost; do not skip) · S13 Africa two patterns 1.5min · S14 SA three tracks 2min. <em>Act 3 — Response (~6 min):</em> S15 No one-size-fits-all 1.5min · S16 Multilateral 1min (skippable) · S17 Firms 1.5min · S18 Communities 1.5min. <em>Close (~2 min):</em> S19 Mandela 2min. | <strong>If time is tight (25 min):</strong> Skip S6 (triggers), S8 (landmark cases), or S16 (multilateral) without losing the narrative thread. S12 (real-world harm to Africans) and S14 (SA three tracks) are anchor slides — do not skip. | <strong>Skipping on the fly:</strong> Use the dot navigation at the bottom to jump ahead. Slides 5, 6, 8, 16 are the four most skippable without breaking story continuity.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:520px;height:520px;top:-120px;right:-120px;background:#e63946;opacity:0.13;"></div>
+        <div class="blob" style="width:320px;height:320px;bottom:-80px;left:-60px;background:#f4a261;opacity:0.10;"></div>
+        <div class="blob" style="width:220px;height:220px;top:38%;left:12%;background:#457b9d;opacity:0.09;"></div>
+    </div>
+    <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;"></canvas>
+    <div class="content text-center">
+        <div style="font-size:72px;margin-bottom:1rem;animation:float 3s ease-in-out infinite;" class="reveal">🔐</div>
+        <p class="text-[0.8rem] tracking-[8px] uppercase text-text-muted mb-3 reveal">ITWeb Security Summit · Johannesburg 2026</p>
+        <h1 class="font-display text-[clamp(2rem,5vw,3.8rem)] font-black bg-linear-to-br from-accent-1 via-accent-2 to-accent-1 bg-clip-text text-transparent tracking-tight mb-4 reveal" style="line-height:1.15;">Hybrid Cyber &amp; Information Operations<br>in 2026</h1>
+        <p class="text-[clamp(0.9rem,1.5vw,1.2rem)] text-text-secondary reveal" style="max-width:640px;margin:0 auto;">How attackers blend disruption and influence</p>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 2 — AGENDA ═══ -->
+<div class="slide slide-2" data-slide="2" data-notes="<strong>Agenda — speaker orientation. Three-act structure.</strong> Act 1 (Global, ~12 min): taxonomy, attack types, trigger conditions, protagonist classes, landmark cases, geopolitical/economic/technical drivers, AI acceleration. Act 2 (Africa &amp; SA, ~10 min): the continent has a qualitatively different threat environment — we move from abstract global threat to concrete African harm. The pivot after slide 10 (AI) is intentional: after establishing the global picture, we ask 'what does this mean for us, here?' Act 3 (Response, ~6 min): four-slide response framework covering no-one-size-fits-all, multilateral, firm-level, and community-level actions. | <strong>Orientation for the audience:</strong> Many in this room are technical practitioners — SOC analysts, CISOs, incident responders. This talk deliberately crosses into influence-operations and political territory. That is intentional: hybridisation means these domains are now inseparable. You cannot defend against MGM-style vishing without understanding social engineering as influence. You cannot defend against election CIB without understanding fake-account infrastructure. | <strong>Africa pivot (Act 2):</strong> Sub-Saharan Africa has 54 countries, 1.4 billion people, 600M+ internet users, but less than 3% of global cybersecurity investment. It is not a smaller version of the global threat — it is a structurally different one. Low cyber resilience + high digital growth + weak platform moderation + closed WhatsApp chains = a threat landscape that requires its own analysis. | <strong>The Mandela framing:</strong> The closing quote is not sentiment. The freedom South Africans fought for must be extended into the digital domain — and that extension is now under active attack.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:380px;height:380px;top:-90px;right:-70px;background:#e63946;opacity:0.08;"></div>
+        <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-40px;background:#457b9d;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Roadmap</p>
+        <h2 class="font-display text-[clamp(1.6rem,3.5vw,2.4rem)] font-bold mb-5 reveal">Today's <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Agenda</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;" class="reveal">
+            <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.25);border-radius:12px;padding:1.2rem;">
+                <div style="font-size:1.6rem;margin-bottom:0.5rem;">🌍</div>
+                <div style="color:#e63946;font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.5rem;">Act 1 · Global Landscape</div>
+                <ul style="font-size:0.72rem;color:#94a3b8;margin:0;padding-left:1rem;line-height:1.7;">
+                    <li>Four ways to weaponise ICT</li>
+                    <li>Three modes of hybrid attack</li>
+                    <li>Most prevalent types + triggers</li>
+                    <li>Five protagonist classes</li>
+                    <li>Landmark cases</li>
+                    <li>Drivers of hybridisation</li>
+                    <li>AI acceleration</li>
+                </ul>
+            </div>
+            <div style="background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.25);border-radius:12px;padding:1.2rem;">
+                <div style="font-size:1.6rem;margin-bottom:0.5rem;">🌍</div>
+                <div style="color:#f4a261;font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.5rem;">Act 2 · Africa &amp; South Africa</div>
+                <ul style="font-size:0.72rem;color:#94a3b8;margin:0;padding-left:1rem;line-height:1.7;">
+                    <li>Africa: a different operational environment</li>
+                    <li>Real-world harm to ordinary Africans</li>
+                    <li>Deadliest harms &amp; stark health example</li>
+                    <li>Africa: two dominant attack patterns</li>
+                    <li>South Africa: three simultaneous tracks</li>
+                </ul>
+            </div>
+            <div style="background:rgba(69,123,157,0.08);border:1px solid rgba(69,123,157,0.25);border-radius:12px;padding:1.2rem;">
+                <div style="font-size:1.6rem;margin-bottom:0.5rem;">🛡️</div>
+                <div style="color:#6aafd4;font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.5rem;">Act 3 · Response</div>
+                <ul style="font-size:0.72rem;color:#94a3b8;margin:0;padding-left:1rem;line-height:1.7;">
+                    <li>No one-size-fits-all</li>
+                    <li>Multilateral frameworks</li>
+                    <li>What firms can do</li>
+                    <li>What communities can do</li>
+                    <li>Closing: Mandela + OASIS</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 3 — OASIS 4-QUADRANT FRAMING ═══ -->
+<div class="slide slide-3" data-slide="3" data-notes="<strong>OASIS Open / STIX extension work.</strong> OASIS is a global standards development organisation. STIX (Structured Threat Intelligence eXpression) is the dominant machine-readable format for sharing cyber threat intelligence — used by government CERTs, ISACs and commercial platforms worldwide. | This 4-quadrant model is being developed to extend STIX so it can model threats to <em>public</em> information environments (elections, civic discourse, public health) as well as the proprietary networks it currently covers. | <strong>Key speaker point:</strong> When we limit our frame to 'disinformation', we implicitly limit our countermeasures to veracity-based interventions — fact-checking, prebunking, labelling. These matter. But they do not address exploitation (ransomware, fraud), abuse (coordinated harassment, xenophobia), or intrusion (theft, sabotage). Each quadrant requires a different institutional response and a different legal framework. | <strong>Source:</strong> OASIS Open standards community; speaker's own framing for the STIX extension project.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:400px;height:400px;top:-100px;right:-80px;background:#e63946;opacity:0.09;"></div>
+        <div class="blob" style="width:280px;height:280px;bottom:-60px;left:-40px;background:#457b9d;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Framing the Problem</p>
+        <h2 class="font-display text-[clamp(1.6rem,3.5vw,2.4rem)] font-bold mb-1 reveal">Four Ways to Weaponise <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Information &amp; Communication</span></h2>
+        <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:1.2rem;" class="reveal">Focusing only on disinformation limits us to veracity-based countermeasures. The full attack surface is wider.</p>
+        <div style="position:relative;max-width:480px;margin:0 auto;" class="reveal">
+            <div style="width:100%;padding-bottom:95%;position:relative;">
+                <svg viewBox="0 0 400 400" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                    <circle cx="200" cy="200" r="190" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+                    <circle cx="200" cy="200" r="38" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+                    <line x1="200" y1="10" x2="200" y2="390" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                    <line x1="10" y1="200" x2="390" y2="200" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                    <circle cx="105" cy="105" r="82" fill="#e63946" fill-opacity="0.13" stroke="#e63946" stroke-opacity="0.35" stroke-width="1.2"/>
+                    <text x="105" y="88" text-anchor="middle" fill="#e63946" font-size="13" font-weight="700" font-family="DM Sans,sans-serif">INTRUSION</text>
+                    <text x="105" y="105" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10.5" font-family="DM Sans,sans-serif">Theft · Sabotage</text>
+                    <text x="105" y="120" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10.5" font-family="DM Sans,sans-serif">Espionage · Wiper</text>
+                    <circle cx="295" cy="105" r="82" fill="#f4a261" fill-opacity="0.13" stroke="#f4a261" stroke-opacity="0.35" stroke-width="1.2"/>
+                    <text x="295" y="88" text-anchor="middle" fill="#f4a261" font-size="13" font-weight="700" font-family="DM Sans,sans-serif">MANIPULATION</text>
+                    <text x="295" y="105" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10.5" font-family="DM Sans,sans-serif">Disinformation</text>
+                    <text x="295" y="120" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10.5" font-family="DM Sans,sans-serif">Propaganda · CIB</text>
+                    <circle cx="105" cy="295" r="82" fill="#457b9d" fill-opacity="0.13" stroke="#457b9d" stroke-opacity="0.35" stroke-width="1.2"/>
+                    <text x="105" y="278" text-anchor="middle" fill="#6aafd4" font-size="13" font-weight="700" font-family="DM Sans,sans-serif">ABUSE</text>
+                    <text x="105" y="295" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10.5" font-family="DM Sans,sans-serif">Hate speech</text>
+                    <text x="105" y="310" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10.5" font-family="DM Sans,sans-serif">Xenophobia · Doxxing</text>
+                    <circle cx="295" cy="295" r="82" fill="#2a9d8f" fill-opacity="0.13" stroke="#2a9d8f" stroke-opacity="0.35" stroke-width="1.2"/>
+                    <text x="295" y="278" text-anchor="middle" fill="#4fcab9" font-size="13" font-weight="700" font-family="DM Sans,sans-serif">EXPLOITATION</text>
+                    <text x="295" y="295" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10.5" font-family="DM Sans,sans-serif">Fraud · Extortion</text>
+                    <text x="295" y="310" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10.5" font-family="DM Sans,sans-serif">Ransomware · Scam</text>
+                    <text x="200" y="196" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9" font-family="DM Sans,sans-serif">ICT</text>
+                    <text x="200" y="208" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9" font-family="DM Sans,sans-serif">Weapon</text>
+                </svg>
+            </div>
+        </div>
+        <p style="text-align:center;font-size:0.68rem;color:#94a3b8;margin-top:0.5rem;" class="reveal">OASIS / STIX extension framing · All four quadrants require distinct countermeasures</p>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 4 — THREE MODES OF HYBRID ATTACK ═══ -->
+<div class="slide slide-4" data-slide="4" data-notes="<strong>Taxonomy source:</strong> Developed by the speaker for this research; influenced by EEAS FIMI taxonomy and NATO hybrid threat frameworks. | <strong>Type 1 — Cyber-enabled influence (strict):</strong> Requires an unauthorised intrusion or DDoS. Examples: DNC hack-and-leak (APT28, 2016); Transnet ransomware + port shutdown (2021); Sony Pictures / Guardians of Peace (North Korea, 2014). | <strong>Type 1 (broad):</strong> No intrusion required. Uses fake accounts, sham websites, coordinated inauthentic behaviour (CIB). Examples: Wagner-linked Africa CIB networks; Prigozhin's Internet Research Agency. | <strong>Type 2 — Influence-enabled cyber:</strong> Deception or social engineering creates the access. Examples: MGM Resorts vishing (Scattered Spider); Experian SA fraudulent client impersonation; Arup deepfake CFO fraud. | <strong>Type 3 — Parallel:</strong> Same actor runs both tracks simultaneously but independently. Examples: PRC pressure on Taiwan; Russian election interference 2016; Iran-Hamas operations. | <strong>EEAS context:</strong> The EU's 4th Annual FIMI Report (2025) identified increased hybridisation as one of three top trends alongside AI use and increased covertness.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:350px;height:350px;top:-80px;right:-60px;background:#e63946;opacity:0.08;"></div>
+        <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#f4a261;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">The Taxonomy</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">Three Modes of <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Hybrid Attack</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;" class="reveal">
+            <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.25);border-radius:12px;padding:1.2rem;">
+                <div style="font-size:1.8rem;margin-bottom:0.5rem;">🎯</div>
+                <div style="color:#e63946;font-weight:700;font-size:0.9rem;margin-bottom:0.4rem;">TYPE 1</div>
+                <div style="font-weight:600;font-size:0.95rem;margin-bottom:0.5rem;">Cyber-Enabled Influence</div>
+                <div style="font-size:0.74rem;color:#94a3b8;line-height:1.5;">Cyber operation <em>serves</em> an influence goal. With or without intrusion (strict vs. broad).</div>
+                <div style="margin-top:0.8rem;font-size:0.69rem;color:#cbd5e1;border-top:1px solid rgba(255,255,255,0.08);padding-top:0.6rem;"><strong style="color:#f4a261;">Examples:</strong> Hack-and-leak, defacement, ransomware-as-coercion, CIB/fake accounts</div>
+            </div>
+            <div style="background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.25);border-radius:12px;padding:1.2rem;">
+                <div style="font-size:1.8rem;margin-bottom:0.5rem;">🎭</div>
+                <div style="color:#f4a261;font-weight:700;font-size:0.9rem;margin-bottom:0.4rem;">TYPE 2</div>
+                <div style="font-weight:600;font-size:0.95rem;margin-bottom:0.5rem;">Influence-Enabled Cyber</div>
+                <div style="font-size:0.74rem;color:#94a3b8;line-height:1.5;">Disinformation or deception <em>enables</em> the intrusion. The lie is the key.</div>
+                <div style="margin-top:0.8rem;font-size:0.69rem;color:#cbd5e1;border-top:1px solid rgba(255,255,255,0.08);padding-top:0.6rem;"><strong style="color:#f4a261;">Examples:</strong> Vishing help desks, deepfake CFO fraud, spearphishing, fraudulent client impersonation</div>
+            </div>
+            <div style="background:rgba(69,123,157,0.08);border:1px solid rgba(69,123,157,0.25);border-radius:12px;padding:1.2rem;">
+                <div style="font-size:1.8rem;margin-bottom:0.5rem;">⚡</div>
+                <div style="color:#6aafd4;font-weight:700;font-size:0.9rem;margin-bottom:0.4rem;">TYPE 3</div>
+                <div style="font-weight:600;font-size:0.95rem;margin-bottom:0.5rem;">Parallel Operations</div>
+                <div style="font-size:0.74rem;color:#94a3b8;line-height:1.5;">Same actor runs cyber and influence tracks simultaneously but independently.</div>
+                <div style="margin-top:0.8rem;font-size:0.69rem;color:#cbd5e1;border-top:1px solid rgba(255,255,255,0.08);padding-top:0.6rem;"><strong style="color:#f4a261;">Examples:</strong> PRC pressure on Taiwan; Russian election interference; Iran–Hamas operations</div>
+            </div>
+        </div>
+        <p style="font-size:0.7rem;color:#94a3b8;text-align:center;margin-top:0.8rem;" class="reveal">EEAS 4th Annual FIMI Report (2025): increased hybridisation is one of the top three global FIMI trends</p>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 5 — MOST PREVALENT ATTACK TYPES ═══ -->
+<div class="slide slide-5" data-slide="5" data-notes="<strong>The strict vs. broad distinction matters enormously for defenders.</strong> Strictly-defined hybrid operations — those with an unauthorised intrusion — require state-grade or criminal-grade offensive capability. They are detectable by SOCs wired for network anomalies. The deception component tends to be targeted, timed, and purposeful. | <strong>Loosely-defined operations (no intrusion)</strong> have been democratised to the point where a domestic political party, a PR firm, or an individual influencer can run them. The barrier is money and motivation, not technical skill. This is why the Africa/South Africa landscape includes both state and domestic actors. | <strong>Globally most prevalent (strict / intrusion-based):</strong> Double-extortion ransomware (Type 2f) is by raw volume the highest-frequency hybrid type — every major ransomware attack is simultaneously a cyber intrusion and a psychological pressure campaign via the leak-site threat. Hack-and-leak (Type 1b) is lower frequency but higher strategic impact. Defacement (Type 1f) is common in conflict contexts. | <strong>Globally most prevalent (broad / no intrusion):</strong> CIB via fake-account infrastructure (Type 1c) is the dominant state-actor type for long-term narrative influence — used by Russia (IRA/Wagner), China (Spamouflage), Iran (Islamic Messaging Teams), and commercial contractors (Team Jorge, Archimedes). Deepfake/impersonation fraud (Type 2c) is the fastest-growing category. | <strong>Africa-specific:</strong> The 9-of-20 qualifying incidents in the dataset split into exactly these two tracks — CIB for influence (primarily elections), and ransomware/extortion for criminal profit.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:380px;height:380px;top:-90px;right:-70px;background:#e63946;opacity:0.09;"></div>
+        <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-40px;background:#f4a261;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Attack Prevalence</p>
+        <h2 class="font-display text-[clamp(1.4rem,3vw,2rem)] font-bold mb-3 reveal">Most Prevalent <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Attack Types</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="reveal">
+            <!-- LEFT: Strict (intrusion) -->
+            <div style="background:rgba(230,57,70,0.07);border:1px solid rgba(230,57,70,0.25);border-radius:12px;padding:1.1rem;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.8rem;">
+                    <span style="font-size:1.3rem;">🔓</span>
+                    <div>
+                        <div style="color:#e63946;font-weight:700;font-size:0.8rem;">STRICT DEFINITION</div>
+                        <div style="font-size:0.66rem;color:#94a3b8;font-style:italic;">Includes unauthorised intrusion</div>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:7px;">
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.8rem;border-left:3px solid #e63946;">
+                        <div style="font-size:0.78rem;font-weight:600;color:#f1f5f9;">Double-Extortion Ransomware (2f)</div>
+                        <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;">Highest volume globally. Intrusion + leak-site psychological pressure. Every ransomware attack is a hybrid attack.</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.8rem;border-left:3px solid #f4a261;">
+                        <div style="font-size:0.78rem;font-weight:600;color:#f1f5f9;">Hack-and-Leak (1b)</div>
+                        <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;">Lower frequency, highest strategic impact. Requires advanced actor. Election/geopolitical trigger.</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.8rem;border-left:3px solid #6aafd4;">
+                        <div style="font-size:0.78rem;font-weight:600;color:#f1f5f9;">Defacement &amp; Signage Hacks (1f)</div>
+                        <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;">Common in conflict and geopolitical crisis contexts. PRC vs Taiwan; Gaza war.</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.8rem;border-left:3px solid #4fcab9;">
+                        <div style="font-size:0.78rem;font-weight:600;color:#f1f5f9;">Spearphishing + Deceptive Lure (2b)</div>
+                        <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;">Precursor to &gt;80% of intrusion-based ops. War-themed, CEO-pretexting, fake login portals.</div>
+                    </div>
+                </div>
+            </div>
+            <!-- RIGHT: Broad (no intrusion) -->
+            <div style="background:rgba(244,162,97,0.07);border:1px solid rgba(244,162,97,0.25);border-radius:12px;padding:1.1rem;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.8rem;">
+                    <span style="font-size:1.3rem;">📡</span>
+                    <div>
+                        <div style="color:#f4a261;font-weight:700;font-size:0.8rem;">BROAD DEFINITION</div>
+                        <div style="font-size:0.66rem;color:#94a3b8;font-style:italic;">No intrusion component</div>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:7px;">
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.8rem;border-left:3px solid #f4a261;">
+                        <div style="font-size:0.78rem;font-weight:600;color:#f1f5f9;">CIB / Fake-Account Networks (1c)</div>
+                        <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;">Dominant state-actor type globally. Russia (IRA/Wagner), China (Spamouflage), Iran, commercial contractors (Team Jorge).</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.8rem;border-left:3px solid #c084fc;">
+                        <div style="font-size:0.78rem;font-weight:600;color:#f1f5f9;">Deepfake / Impersonation Fraud (2c)</div>
+                        <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;">Fastest-growing. Arup: $25.6M via live deepfake video. No system intrusion needed.</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.8rem;border-left:3px solid #e63946;">
+                        <div style="font-size:0.78rem;font-weight:600;color:#f1f5f9;">DDoS-as-Political-Signal (1a/1g)</div>
+                        <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;">NoName057(16): 2,000+ attacks 2022–25 against NATO targets. Each attack is a Telegram press release.</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.8rem;border-left:3px solid #6aafd4;">
+                        <div style="font-size:0.78rem;font-weight:600;color:#f1f5f9;">Vishing / Social Engineering (2b/2c)</div>
+                        <div style="font-size:0.67rem;color:#94a3b8;margin-top:2px;">MGM: one help-desk call defeated MFA + Okta. $100M losses. AI voice cloning removes language barriers.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 6 — WHEN DO THESE ATTACKS OCCUR? ═══ -->
+<div class="slide slide-6" data-slide="6" data-notes="<strong>Understanding trigger conditions helps defenders prepare, not just react.</strong> The key insight is that hybrid attacks are not random — they cluster around identifiable structural conditions. | <strong>Election cycles:</strong> 2024 was the largest election year in history (70+ countries). EEAS data shows hybridisation spikes in the 6-month window before and after elections. Hack-and-leak (1b) operations require months of preparation — the DNC emails were stolen months before the timed leak. State actors pre-position. | <strong>Geopolitical conflict and crisis:</strong> War in Ukraine triggered the largest documented DDoS campaign (NoName057(16), 2022–present), the largest coordinated hack-and-leak environment (Ukrainian IT Army; Russian GRU), and a major increase in war-themed phishing (Gamaredon, EU-35). The Gaza war (Oct 2023) triggered a surge in Iranian hybrid ops — Microsoft reported a 5× increase in Iranian cyber-enabled influence operations in October 2023. | <strong>Corporate vulnerability windows:</strong> Ransomware operators target periods of corporate distress — M&A activity, regulatory investigations, earnings periods. Transnet was attacked days after the 2021 KwaZulu-Natal unrest (CrowdStrike assessed as coincidental). Change Healthcare was targeted via an unpatched Citrix portal with no MFA. | <strong>Low technical resilience:</strong> TransUnion's server was brute-forced with the password 'Password'. This is a structural condition, not a one-off. Africa's high digital adoption + low cyber maturity = sustained attacker ROI. | <strong>AI lowering the threshold:</strong> Previously, authentic-sounding multi-language CIB campaigns required native speakers. LLMs have eliminated this constraint, enabling continuous operations regardless of election cycle.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:370px;height:370px;top:-80px;right:-70px;background:#f4a261;opacity:0.09;"></div>
+        <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#e63946;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">When &amp; Why</p>
+        <h2 class="font-display text-[clamp(1.4rem,3vw,2rem)] font-bold mb-3 reveal">Trigger Conditions: <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">When Each Attack Type Emerges</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="reveal">
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #e63946;">
+                <div style="font-size:0.8rem;font-weight:700;color:#e63946;margin-bottom:0.5rem;">🗳️ Hack-and-Leak (1b)</div>
+                <ul style="font-size:0.7rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Electoral contests with high stakes (presidential, EU-level)</li>
+                    <li>Opposition figure or campaign as target</li>
+                    <li>State actor with months of pre-positioning</li>
+                    <li>Media ecosystem ready to amplify</li>
+                </ul>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #f4a261;">
+                <div style="font-size:0.8rem;font-weight:700;color:#f4a261;margin-bottom:0.5rem;">💰 Ransomware / Double-Extortion (2f)</div>
+                <ul style="font-size:0.7rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Exposed remote access (RDP, VPN, Citrix) with weak credentials</li>
+                    <li>Absence of MFA on internet-facing systems</li>
+                    <li>High-value data (credit records, health data, passenger PII)</li>
+                    <li>Organisation reliant on continuous operations (ports, hospitals, food production)</li>
+                </ul>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #6aafd4;">
+                <div style="font-size:0.8rem;font-weight:700;color:#6aafd4;margin-bottom:0.5rem;">📣 CIB / Fake Networks (1c)</div>
+                <ul style="font-size:0.7rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Election periods (6-month window) — but now ongoing</li>
+                    <li>Geopolitical contest for legitimacy (Sahel; BRICS)</li>
+                    <li>Weak local platform moderation in target language</li>
+                    <li>WhatsApp / closed-chain ecosystems with no fact-checking</li>
+                </ul>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #c084fc;">
+                <div style="font-size:0.8rem;font-weight:700;color:#c084fc;margin-bottom:0.5rem;">🤖 Deepfake / Vishing (2b/2c)</div>
+                <ul style="font-size:0.7rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Large wire-transfer authorisation workflows</li>
+                    <li>Remote-work environments (reduced in-person verification)</li>
+                    <li>Publicly available executive footage (LinkedIn, earnings calls)</li>
+                    <li>No out-of-band verification protocol in place</li>
+                </ul>
+            </div>
+        </div>
+        <p style="font-size:0.7rem;color:#94a3b8;text-align:center;margin-top:0.7rem;" class="reveal">AI is decoupling CIB operations from election calendars — continuous multi-language influence is now possible year-round</p>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 7 — GLOBAL PROTAGONIST CLASSES ═══ -->
+<div class="slide slide-7" data-slide="7" data-notes="<strong>Five actor classes — key distinctions for the audience:</strong> | 1. <strong>State agencies (Tier 1):</strong> GRU (Russian military intelligence), SVR (Russian foreign intelligence), IRGC (Iran), PLA-SSF (China's military cyber command). Direct state capability — most sophisticated, highest deniability problem. | 2. <strong>State-linked APTs:</strong> APT28 = Fancy Bear = GRU Unit 26165. Gamaredon (FSB-linked, Ukraine). Lazarus Group (DPRK). APT41 (China, dual espionage + financial). APT = Advanced Persistent Threat. | 3. <strong>Proxies/contractors:</strong> Wagner Group / IRA (now 'Africa Corps'). Team Jorge (Tal Hanan, Israeli contractor) — claimed 30+ election ops globally, exposed Feb 2023 by Haaretz/Guardian/Le Monde. Archimedes Group (Israel, suspended by Facebook 2019 for CIB targeting Nigeria, Senegal, Togo, Angola, Niger, Tunisia). | 4. <strong>Patriotic hacktivists:</strong> NoName057(16) — ~4,000 volunteers, DDoSia tool, 2,000+ attacks against NATO financial sector 2022–2025. Operation Eastwood (Europol, July 2025) disrupted them: 100+ servers seized, 2 arrested. Ukrainian IT Army — government-directed volunteer DDoS force. | 5. <strong>Criminal groups:</strong> REvil (dismantled 2022), ALPHV/BlackCat (exit-scam 2024), RansomHub (successor), Scattered Spider (English-speaking, social-engineering specialists), RansomHouse, BianLian. RaaS = Ransomware-as-a-Service.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:380px;height:380px;top:-100px;right:-80px;background:#e63946;opacity:0.09;"></div>
+        <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-40px;background:#457b9d;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Who Does This?</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">Five Classes of <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Protagonist</span> — Global</h2>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;" class="reveal">
+            <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.2);border-radius:10px;padding:0.9rem 0.7rem;text-align:center;">
+                <div style="font-size:1.5rem;margin-bottom:0.4rem;">🏛️</div>
+                <div style="color:#e63946;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.3rem;">State Agencies</div>
+                <div style="font-size:0.67rem;color:#94a3b8;line-height:1.45;">GRU · SVR · IRGC<br>PLA-SSF · NSA</div>
+            </div>
+            <div style="background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.2);border-radius:10px;padding:0.9rem 0.7rem;text-align:center;">
+                <div style="font-size:1.5rem;margin-bottom:0.4rem;">🕵️</div>
+                <div style="color:#f4a261;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.3rem;">State-Linked APTs</div>
+                <div style="font-size:0.67rem;color:#94a3b8;line-height:1.45;">APT28 · APT29<br>Gamaredon · Lazarus<br>APT41</div>
+            </div>
+            <div style="background:rgba(69,123,157,0.08);border:1px solid rgba(69,123,157,0.2);border-radius:10px;padding:0.9rem 0.7rem;text-align:center;">
+                <div style="font-size:1.5rem;margin-bottom:0.4rem;">🎪</div>
+                <div style="color:#6aafd4;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.3rem;">Proxies / Contractors</div>
+                <div style="font-size:0.67rem;color:#94a3b8;line-height:1.45;">Wagner/IRA<br>Team Jorge<br>Archimedes Group</div>
+            </div>
+            <div style="background:rgba(42,157,143,0.08);border:1px solid rgba(42,157,143,0.2);border-radius:10px;padding:0.9rem 0.7rem;text-align:center;">
+                <div style="font-size:1.5rem;margin-bottom:0.4rem;">⚡</div>
+                <div style="color:#4fcab9;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.3rem;">Patriotic Hacktivists</div>
+                <div style="font-size:0.67rem;color:#94a3b8;line-height:1.45;">NoName057(16)<br>Ukrainian IT Army<br>Killnet · Sudan</div>
+            </div>
+            <div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);border-radius:10px;padding:0.9rem 0.7rem;text-align:center;">
+                <div style="font-size:1.5rem;margin-bottom:0.4rem;">💰</div>
+                <div style="color:#c084fc;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.3rem;">Criminal Groups</div>
+                <div style="font-size:0.67rem;color:#94a3b8;line-height:1.45;">REvil · ALPHV<br>RansomHub<br>Scattered Spider</div>
+            </div>
+        </div>
+        <div style="margin-top:12px;padding:9px 14px;background:rgba(244,162,97,0.07);border-left:3px solid #f4a261;border-radius:0 8px 8px 0;" class="reveal">
+            <p style="font-size:0.74rem;color:#cbd5e1;margin:0;"><strong style="color:#f4a261;">Key convergence trend (EEAS 2025):</strong> State, proxy, hacktivist, and criminal lines are dissolving. RaaS affiliates provide plausible deniability; commercial contractors offer election-interference-as-a-service; patriotic hacktivists are co-opted by intelligence agencies.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 8 — FOUR LANDMARK CASES ═══ -->
+<div class="slide slide-8" data-slide="8" data-notes="<strong>Four landmark cases — speaking notes:</strong> | <strong>DNC Hack-and-Leak (2016):</strong> APT28 (GRU Unit 26165) spearphished John Podesta with a fake Google security alert. 50,000+ emails stolen. Released via DCLeaks and WikiLeaks. Timed to damage the Clinton campaign. 12 GRU officers indicted by Mueller. Classic Type 1: intrusion serving a geopolitical influence goal. | <strong>Sony Pictures (2014):</strong> 'Guardians of Peace' (attributed by FBI to North Korea). Months inside Sony's network; Shamoon-variant wiper; 100TB released including executive emails and unreleased films. Coerced Sony to pull 'The Interview'. CEO Amy Pascal departed. Hack-and-leak + hack-and-destroy + coercive threats. | <strong>MGM Resorts (2023):</strong> Scattered Spider (UNC3944) — English-speaking US/UK members, some aged 17–25. 10-min LinkedIn recon → vishing help desk pretending to be an MGM employee → Okta SSO lateral movement → ALPHV ransomware. ~$100M in losses. Caesars paid ~$15M ransom a week earlier. One vishing call defeated enterprise MFA. | <strong>Arup Deepfake (2024):</strong> Finance worker received spearphish from 'CFO'. Joined a video call with deepfake versions of CFO + colleagues built from LinkedIn and public footage. Authorised 15 wire transfers totalling HK$200M (~$25.6M). Zero system intrusion — the deception was the entire attack. Source: CNN, Fortune, Arup CIO Rob Greig interview at WEF 2025.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:350px;height:350px;top:-80px;right:-70px;background:#e63946;opacity:0.08;"></div>
+        <div class="blob" style="width:220px;height:220px;bottom:-50px;left:-30px;background:#f4a261;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Global Landmarks</p>
+        <h2 class="font-display text-[clamp(1.4rem,3vw,2rem)] font-bold mb-4 reveal">Four Cases That <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Changed the Playbook</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="reveal">
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #e63946;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;"><span style="font-size:1.3rem;">🗳️</span><strong style="font-size:0.82rem;color:#f4a261;">DNC Hack-and-Leak · 2016</strong></div>
+                <p style="font-size:0.71rem;color:#94a3b8;margin:0;line-height:1.5;">APT28 (GRU) spearphished Podesta → 50,000 emails → WikiLeaks/DCLeaks → election disruption. <strong style="color:#cbd5e1;">Type 1 textbook.</strong> 12 GRU officers indicted by Mueller.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #f4a261;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;"><span style="font-size:1.3rem;">🎬</span><strong style="font-size:0.82rem;color:#f4a261;">Sony Pictures · 2014</strong></div>
+                <p style="font-size:0.71rem;color:#94a3b8;margin:0;line-height:1.5;">North Korea-linked GOP: months of access → wiper → 100TB leak → coercive threats → Sony pulled <em>The Interview</em>. <strong style="color:#cbd5e1;">Hack + destroy + coerce.</strong></p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #457b9d;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;"><span style="font-size:1.3rem;">🎰</span><strong style="font-size:0.82rem;color:#f4a261;">MGM Resorts · 2023</strong></div>
+                <p style="font-size:0.71rem;color:#94a3b8;margin:0;line-height:1.5;">Scattered Spider: 10-min LinkedIn recon → vishing help desk → Okta SSO → ALPHV ransomware → <strong style="color:#cbd5e1;">~$100M losses.</strong> One call defeated MFA.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #4fcab9;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;"><span style="font-size:1.3rem;">🤖</span><strong style="font-size:0.82rem;color:#f4a261;">Arup Deepfake · 2024</strong></div>
+                <p style="font-size:0.71rem;color:#94a3b8;margin:0;line-height:1.5;">AI deepfake CFO video call → 15 wire transfers → <strong style="color:#cbd5e1;">$25.6M stolen.</strong> Zero system intrusion. The deception <em>was</em> the attack. "I saw them on camera."</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 9 — DRIVERS (GLOBAL) ═══ -->
+<div class="slide slide-9" data-slide="9" data-notes="<strong>Geopolitical drivers:</strong> The multipolar order — Russia, China, Iran, North Korea ('CRINK' bloc) — uses hybrid ops as statecraft below the threshold of open war. 2024 was the largest election year in history (70+ countries). EEAS notes hybridisation spiked in election periods. | <strong>Economic drivers:</strong> Cybercrime is a $10.5 trillion annual economy (Cybersecurity Ventures 2025). RaaS industrialised the attack. ALPHV charged ~20% of ransom; affiliates keep 80%. Africa's low cyber maturity + high digital adoption = profitable target. | <strong>Technical drivers:</strong> GenAI has collapsed the cost of: (a) content generation for CIB, (b) voice cloning for vishing, (c) deepfake video for impersonation fraud, (d) translation for multilingual ops. Bulletproof hosting and Tor hidden services enable persistent infrastructure. As-a-service ecosystems mean capability gaps are filled by criminal markets. | <strong>EEAS 2025 top 3 FIMI trends:</strong> (1) Increased hybridisation, (2) Increased AI use, (3) Increased covertness.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:380px;height:380px;top:-90px;right:-70px;background:#f4a261;opacity:0.09;"></div>
+        <div class="blob" style="width:260px;height:260px;bottom:-60px;left:-40px;background:#e63946;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Why Now?</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">Drivers Behind <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Hybridisation</span> — Global</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;" class="reveal">
+            <div style="background:rgba(230,57,70,0.07);border:1px solid rgba(230,57,70,0.2);border-radius:10px;padding:1.1rem;">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem;">🌍</div>
+                <div style="color:#e63946;font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:0.5rem;">Geopolitical</div>
+                <ul style="font-size:0.71rem;color:#94a3b8;margin:0;padding-left:1rem;line-height:1.7;">
+                    <li>Multipolar order / CRINK bloc</li>
+                    <li>2024: 70+ elections globally</li>
+                    <li>Gaza war &amp; proxy conflicts</li>
+                    <li>Ukraine war as lab</li>
+                    <li>Election cycles = forcing function</li>
+                </ul>
+            </div>
+            <div style="background:rgba(244,162,97,0.07);border:1px solid rgba(244,162,97,0.2);border-radius:10px;padding:1.1rem;">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem;">💸</div>
+                <div style="color:#f4a261;font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:0.5rem;">Economic</div>
+                <ul style="font-size:0.71rem;color:#94a3b8;margin:0;padding-left:1rem;line-height:1.7;">
+                    <li>$10.5T annual cybercrime economy</li>
+                    <li>RaaS industrialised the attack</li>
+                    <li>Influence-as-a-service market</li>
+                    <li>Low-cost AI content generation</li>
+                    <li>Africa: high returns, low resilience</li>
+                </ul>
+            </div>
+            <div style="background:rgba(69,123,157,0.07);border:1px solid rgba(69,123,157,0.2);border-radius:10px;padding:1.1rem;">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem;">⚙️</div>
+                <div style="color:#6aafd4;font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:0.5rem;">Technical</div>
+                <ul style="font-size:0.71rem;color:#94a3b8;margin:0;padding-left:1rem;line-height:1.7;">
+                    <li>GenAI: deepfakes, voice cloning</li>
+                    <li>Bulletproof hosting / Tor</li>
+                    <li>As-a-service ecosystems</li>
+                    <li>Closed platforms (WhatsApp)</li>
+                    <li>AI-accelerated CIB campaigns</li>
+                </ul>
+            </div>
+        </div>
+        <div style="margin-top:12px;padding:9px 14px;background:rgba(244,162,97,0.07);border-left:3px solid #f4a261;border-radius:0 8px 8px 0;" class="reveal">
+            <p style="font-size:0.71rem;color:#cbd5e1;margin:0;"><strong style="color:#f4a261;">EEAS 4th FIMI Report (2025) Top 3 Trends:</strong> (1) Increased hybridisation · (2) Increased AI use · (3) Increased covertness</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 10 — AI SUPERCHARGING THE HYBRID TOOLKIT ═══ -->
+<div class="slide slide-10" data-slide="10" data-notes="<strong>AI acceleration — key facts for Q&amp;A:</strong> | <strong>Deepfakes:</strong> Arup ($25.6M, Jan 2024) used publicly available footage from LinkedIn, YouTube and earnings calls to build real-time deepfake video + audio of the CFO and colleagues. 'I saw them on camera.' No arrests as of early 2025. | <strong>Voice cloning:</strong> ElevenLabs and similar services can clone a voice from 3 seconds of audio. Used in CEO fraud vishing calls. Increasingly combined with LinkedIn recon. | <strong>AI-accelerated CIB:</strong> Meta's Q1 2025 transparency report identified AI-generated profile pictures and AI-written posts in CIB takedowns. EEAS notes AI allows campaigns to scale in multiple languages simultaneously — previously requiring native speakers. | <strong>Spearphishing:</strong> LLMs reduce the skill barrier for highly personalised phishing. Previous heuristics (grammar errors, generic greetings) no longer reliable. | <strong>Countermeasure gap:</strong> Technical solutions (deepfake detection, C2PA content provenance standard) are nascent. Out-of-band verification (call-back on a known number; in-person for large transfers) is the most reliable current countermeasure. | <strong>C2PA</strong> = Coalition for Content Provenance and Authenticity — open standard for cryptographic provenance metadata. Adopted by Adobe, Microsoft, BBC.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:400px;height:400px;top:-100px;right:-80px;background:#4fcab9;opacity:0.09;"></div>
+        <div class="blob" style="width:260px;height:260px;bottom:-60px;left:-40px;background:#e63946;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Emerging Threat</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">AI is <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Supercharging</span> the Hybrid Toolkit</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;" class="reveal">
+            <div style="background:rgba(79,202,185,0.07);border:1px solid rgba(79,202,185,0.2);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">🎭</div>
+                <div style="color:#4fcab9;font-weight:700;font-size:0.82rem;margin-bottom:0.4rem;">Deepfake Fraud</div>
+                <p style="font-size:0.71rem;color:#94a3b8;margin:0;line-height:1.5;">Arup: $25.6M stolen via live deepfake video call. Built from LinkedIn + YouTube. Zero intrusion. <strong style="color:#cbd5e1;">"I saw them on camera."</strong></p>
+            </div>
+            <div style="background:rgba(244,162,97,0.07);border:1px solid rgba(244,162,97,0.2);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">🗣️</div>
+                <div style="color:#f4a261;font-weight:700;font-size:0.82rem;margin-bottom:0.4rem;">Voice Cloning / Vishing</div>
+                <p style="font-size:0.71rem;color:#94a3b8;margin:0;line-height:1.5;">3 seconds of audio = cloned voice. MGM Resorts: one vishing call defeated enterprise MFA and Okta SSO. <strong style="color:#cbd5e1;">$100M in losses.</strong></p>
+            </div>
+            <div style="background:rgba(230,57,70,0.07);border:1px solid rgba(230,57,70,0.2);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">🤖</div>
+                <div style="color:#e63946;font-weight:700;font-size:0.82rem;margin-bottom:0.4rem;">AI-Scaled CIB</div>
+                <p style="font-size:0.71rem;color:#94a3b8;margin:0;line-height:1.5;">LLMs generate authentic-sounding content in any language. EEAS: AI enables simultaneous multi-language campaigns previously requiring native speakers.</p>
+            </div>
+            <div style="background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.2);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">🎯</div>
+                <div style="color:#c084fc;font-weight:700;font-size:0.82rem;margin-bottom:0.4rem;">AI-Personalised Spearphishing</div>
+                <p style="font-size:0.71rem;color:#94a3b8;margin:0;line-height:1.5;">Previous detection heuristics (grammar errors, generic greetings) no longer reliable. LLMs write perfect contextual lures from scraped social data.</p>
+            </div>
+        </div>
+        <p style="font-size:0.7rem;color:#94a3b8;text-align:center;" class="reveal">Out-of-band verification remains the most reliable countermeasure to AI impersonation attacks</p>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 11 — AFRICA: A DIFFERENT OPERATIONAL ENVIRONMENT ═══ -->
+<div class="slide slide-11" data-slide="11" data-notes="<strong>This slide is the pivot point — from global to continental.</strong> The key argument: Africa is not simply a smaller version of the global threat landscape. It has distinct structural features that change how hybrid attacks manifest, who runs them, and what harms they cause. | <strong>Mobile-first digital infrastructure:</strong> In most sub-Saharan African countries, the majority of internet access is via mobile phone, not desktop. This means WhatsApp is not a supplement to the information ecosystem — it IS the information ecosystem for most people. WhatsApp's end-to-end encryption and group-forwarding mechanics make it ideal for disinformation spread and nearly impossible to moderate. | <strong>Limited African-language content moderation:</strong> Facebook, X/Twitter, YouTube and TikTok have very thin moderation capacity in Swahili, Amharic, Hausa, Igbo, Yoruba, Zulu, Xhosa, or any of the continent's 2,000+ languages. This means that content flagged in English in hours can circulate in Zulu or Hausa for weeks. | <strong>Rapid digital adoption + low cyber resilience:</strong> Africa is the world's fastest-growing mobile internet market. But the security infrastructure — trained workforce, patched systems, MFA adoption, incident response capacity — has not kept pace. TransUnion's server was brute-forced with the password 'Password'. This is a structural feature of the market, not an outlier. | <strong>Geopolitical contest:</strong> Africa is the new arena for the Russia-France contest (Sahel), China's Belt and Road influence, and US Africa Command operations. Each external actor runs both cyber and influence tracks. | <strong>Domestic commercial influence market:</strong> Team Jorge and Archimedes Group both ran commercial election-interference operations explicitly targeting African elections — Nigeria, Senegal, Togo, Angola, Niger, Tunisia. This is a market, not a state secret.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:400px;height:400px;top:-90px;right:-80px;background:#f4a261;opacity:0.10;"></div>
+        <div class="blob" style="width:270px;height:270px;bottom:-60px;left:-40px;background:#e63946;opacity:0.08;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Continental Pivot</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">Africa: A <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Different Operational Environment</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="reveal">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.22);border-radius:10px;padding:0.9rem;">
+                    <div style="display:flex;align-items:center;gap:7px;margin-bottom:0.4rem;"><span style="font-size:1.1rem;">📱</span><strong style="color:#f4a261;font-size:0.78rem;">Mobile-First Information Ecosystem</strong></div>
+                    <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">WhatsApp IS the public sphere for most Africans. Closed-chain forwarding defeats platform moderation. No fact-checking layer at scale.</p>
+                </div>
+                <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.22);border-radius:10px;padding:0.9rem;">
+                    <div style="display:flex;align-items:center;gap:7px;margin-bottom:0.4rem;"><span style="font-size:1.1rem;">🌐</span><strong style="color:#e63946;font-size:0.78rem;">2,000+ Languages, Minimal Moderation</strong></div>
+                    <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">Content flagged in English in hours circulates in Zulu, Hausa, or Amharic for weeks. AI is now generating disinformation in these languages at scale.</p>
+                </div>
+                <div style="background:rgba(69,123,157,0.08);border:1px solid rgba(69,123,157,0.22);border-radius:10px;padding:0.9rem;">
+                    <div style="display:flex;align-items:center;gap:7px;margin-bottom:0.4rem;"><span style="font-size:1.1rem;">📈</span><strong style="color:#6aafd4;font-size:0.78rem;">Rapid Digital Adoption + Low Resilience</strong></div>
+                    <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">World's fastest-growing mobile internet market. Security infrastructure not keeping pace. Password 'Password' on a credit-bureau server is a structural feature, not an outlier.</p>
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="background:rgba(42,157,143,0.08);border:1px solid rgba(42,157,143,0.22);border-radius:10px;padding:0.9rem;">
+                    <div style="display:flex;align-items:center;gap:7px;margin-bottom:0.4rem;"><span style="font-size:1.1rem;">🌍</span><strong style="color:#4fcab9;font-size:0.78rem;">Geopolitical Contest</strong></div>
+                    <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">Russia–France contest in the Sahel. China's Belt and Road influence. US Africa Command. Each external actor runs both cyber and influence tracks simultaneously.</p>
+                </div>
+                <div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.22);border-radius:10px;padding:0.9rem;">
+                    <div style="display:flex;align-items:center;gap:7px;margin-bottom:0.4rem;"><span style="font-size:1.1rem;">💼</span><strong style="color:#c084fc;font-size:0.78rem;">Commercial Influence-as-a-Service</strong></div>
+                    <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">Team Jorge targeted Nigeria, Senegal, Togo, Angola, Niger, Tunisia. Archimedes Group ran Facebook CIB across 6 African countries. This is a functioning market.</p>
+                </div>
+                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:10px;padding:0.9rem;">
+                    <div style="display:flex;align-items:center;gap:7px;margin-bottom:0.4rem;"><span style="font-size:1.1rem;">🏦</span><strong style="color:#f1f5f9;font-size:0.78rem;">High-Value, Under-Protected Targets</strong></div>
+                    <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">Telecoms (290M subscriber MTN breach), credit bureaux, ports, mining, aviation — all attacked by ransomware groups who see Africa as high-ROI and low-risk.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 12 — REAL-WORLD HARM CATEGORIES ═══ -->
+<div class="slide slide-12" data-slide="12" data-notes="<strong>This is the moral core of the talk — the pivot from abstraction to human consequence.</strong> Hybrid operations are not geopolitical chess games. They cause cascading harm to ordinary people who never appear in a threat-intelligence report. | <strong>DEADLIEST HARMS (ranked by evidence of mortality):</strong> (1) Health disinformation — the single highest-mortality harm category. COVID vaccine disinformation circulated via WhatsApp in SA, Nigeria, Ethiopia, and DRC reduced uptake. But the starkest documented case is the DRC: the 2019–2020 measles epidemic killed 6,000+ people — the deadliest measles outbreak in the world that year — while documented anti-vaccine disinformation campaigns ran simultaneously on WhatsApp. WHO Afro has linked vaccine hesitancy disinformation to preventable child deaths across the continent. (2) Election manipulation → conflict. CIB-enabled false coup justifications and ethnic incitement (Mali, CAR, Ethiopia) have preceded violence. The link between disinformation and ethnic violence has a well-documented history in sub-Saharan Africa. (3) Supply chain disruption. Transnet port shutdown reduced SA container throughput by 60%+. For landlocked countries — Zimbabwe, Zambia, Botswana, Eswatini — whose food and pharmaceutical imports come through SA ports, a week-long shutdown has food-security consequences. | <strong>STARK HEALTH EXAMPLE (speak to this directly):</strong> The DRC measles case is the one example the audience should leave remembering. A child in Kinshasa or Goma doesn't know they were killed by a disinformation campaign. Their parents were told by a WhatsApp message that the vaccine contains a tracking chip, or causes infertility. That message was created, amplified, and targeted by a network — possibly foreign, possibly domestic, possibly a combination. The platform couldn't moderate it in Lingala or Swahili. The public health system couldn't reach the family in time. 6,000 children. This is what 'information operations' means on this continent. | <strong>Financial harm to individuals:</strong> TransUnion SA: 3–54M credit records. Enables SIM-swap fraud — a bank account drained overnight, a loan application rejected, a SIM card silenced. Cell C: 7.7M subscribers, 2TB published. MTN: 290M subscribers across 18 countries. | <strong>Institutional trust harm:</strong> Often the primary goal — not the data, not the ransom, but the erosion of trust in democratic institutions. When citizens believe the government is incompetent or corrupt based on fabricated evidence, the attacker has succeeded even if the intrusion is detected and the ransomware decrypted.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:360px;height:360px;top:-80px;right:-60px;background:#e63946;opacity:0.10;"></div>
+        <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#f4a261;opacity:0.08;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">The Human Cost</p>
+        <h2 class="font-display text-[clamp(1.4rem,3vw,2rem)] font-bold mb-3 reveal">Real-World Harm to <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Ordinary Africans</span></h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;" class="reveal">
+            <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.22);border-radius:10px;padding:0.85rem;text-align:center;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">🗳️</div>
+                <div style="color:#e63946;font-weight:700;font-size:0.75rem;margin-bottom:0.3rem;">Electoral Harm</div>
+                <p style="font-size:0.67rem;color:#94a3b8;margin:0;line-height:1.5;">CIB networks suppress opposition, fabricate crises, push false coup justifications. Citizens making electoral choices on manipulated information.</p>
+            </div>
+            <div style="background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.22);border-radius:10px;padding:0.85rem;text-align:center;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">💉</div>
+                <div style="color:#f4a261;font-weight:700;font-size:0.75rem;margin-bottom:0.3rem;">Health Harm</div>
+                <p style="font-size:0.67rem;color:#94a3b8;margin:0;line-height:1.5;">Vaccine disinformation (COVID, polio, HPV) via WhatsApp drives hesitancy. DRC measles epidemic 2019–20: 6,000+ deaths. <strong style="color:#e63946;">Disinformation kills.</strong></p>
+            </div>
+            <div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.22);border-radius:10px;padding:0.85rem;text-align:center;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">💳</div>
+                <div style="color:#c084fc;font-weight:700;font-size:0.75rem;margin-bottom:0.3rem;">Financial Harm to Individuals</div>
+                <p style="font-size:0.67rem;color:#94a3b8;margin:0;line-height:1.5;">TransUnion: 3–54M SA credit records stolen → SIM-swap fraud, identity theft, denied loans. Cell C: 7.7M subscribers. MTN: 290M.</p>
+            </div>
+            <div style="background:rgba(42,157,143,0.08);border:1px solid rgba(42,157,143,0.22);border-radius:10px;padding:0.85rem;text-align:center;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">🚢</div>
+                <div style="color:#4fcab9;font-weight:700;font-size:0.75rem;margin-bottom:0.3rem;">Supply Chain Harm</div>
+                <p style="font-size:0.67rem;color:#94a3b8;margin:0;line-height:1.5;">Transnet: ports at 10% capacity → food + mining exports disrupted for landlocked neighbours. Astral Foods: chicken supply disrupted across SA.</p>
+            </div>
+            <div style="background:rgba(69,123,157,0.08);border:1px solid rgba(69,123,157,0.22);border-radius:10px;padding:0.85rem;text-align:center;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">✊</div>
+                <div style="color:#6aafd4;font-weight:700;font-size:0.75rem;margin-bottom:0.3rem;">Civil Society Harm</div>
+                <p style="font-size:0.67rem;color:#94a3b8;margin:0;line-height:1.5;">Activists doxxed, SIM-disabled, account-hijacked. Iranian cyber-repression model studied by African authoritarian governments. Chilling effect on speech.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:10px;padding:0.85rem;text-align:center;">
+                <div style="font-size:1.4rem;margin-bottom:0.4rem;">🏛️</div>
+                <div style="color:#f1f5f9;font-weight:700;font-size:0.75rem;margin-bottom:0.3rem;">Institutional Trust Harm</div>
+                <p style="font-size:0.67rem;color:#94a3b8;margin:0;line-height:1.5;">CIB fabricating government incompetence erodes the trust needed for democratic governance — often the attacker's primary goal.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 13 — AFRICA / SA: TWO DOMINANT PATTERNS ═══ -->
+<div class="slide slide-13" data-slide="13" data-notes="<strong>Africa-specific context:</strong> The research dataset contains 20 African incidents; 9 of 20 meet the ≥0.7 fit threshold. The dataset is subject to English-language and Global North reporting bias — incidents in Francophone Africa, Ethiopia, DRC are under-reported. | <strong>Two dominant patterns:</strong> (1) CIB/fake-account networks — predominantly Russian-linked (Wagner/IRA) running influence operations in Sahel countries (Mali, Burkina Faso, Niger, CAR, Sudan, Madagascar, Mozambique). Type 1c (broad) — no intrusion. Stanford Internet Observatory and EU DisinfoLab have documented these. (2) Double-extortion ransomware against private-sector corporate targets — Type 2f. | <strong>Wagner / IRA in Africa:</strong> Wagner Group (now 'Africa Corps' post-Prigozhin, August 2023) uses information operations to: legitimise military deployments, delegitimise French/Western presence, protect concession agreements. Stanford Internet Observatory exposed IRA African operations in 2019. | <strong>Kenya Airways (AF-9):</strong> RansomEXX extorted Kenya Airways Dec 2023–Jan 2024. Passport copies, police reports, accident records published. KQ declined to pay. | <strong>South Africa accounts for 9 of 20 African cases</strong> — the most of any African country. See next slide for the three SA attack tracks.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:360px;height:360px;top:-90px;right:-70px;background:#e63946;opacity:0.09;"></div>
+        <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#f4a261;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Continental Lens</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">Africa: Two Dominant <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Attack Patterns</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="reveal">
+            <div style="background:rgba(230,57,70,0.07);border:1px solid rgba(230,57,70,0.2);border-radius:12px;padding:1.2rem;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.7rem;"><span style="font-size:1.4rem;">📣</span><strong style="color:#e63946;font-size:0.85rem;">CIB / Fake Networks</strong></div>
+                <p style="font-size:0.72rem;color:#94a3b8;line-height:1.55;margin:0 0 0.7rem;">Type 1c (broad). No intrusion. Wagner-linked IRA across Mali, Burkina Faso, Niger, CAR, Sudan, Madagascar. Sahel: geopolitical contest between Russia and France.</p>
+                <div style="font-size:0.69rem;color:#cbd5e1;border-top:1px solid rgba(255,255,255,0.08);padding-top:0.6rem;"><strong style="color:#f4a261;">Actors:</strong> Prigozhin/Wagner IRA, Team Jorge, Archimedes Group, domestic political-PR networks</div>
+            </div>
+            <div style="background:rgba(244,162,97,0.07);border:1px solid rgba(244,162,97,0.2);border-radius:12px;padding:1.2rem;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.7rem;"><span style="font-size:1.4rem;">🔒</span><strong style="color:#f4a261;font-size:0.85rem;">Double-Extortion Ransomware</strong></div>
+                <p style="font-size:0.72rem;color:#94a3b8;line-height:1.55;margin:0 0 0.7rem;">Type 2f. Telecoms (MTN, Cell C), aviation (Kenya Airways), credit bureaux, ports, mining, agriculture. Ransomware + leak-site psychological pressure = hybrid attack.</p>
+                <div style="font-size:0.69rem;color:#cbd5e1;border-top:1px solid rgba(255,255,255,0.08);padding-top:0.6rem;"><strong style="color:#f4a261;">Groups:</strong> RansomEXX, RansomHub, RansomHouse, BianLian, Death Kitty/HelloKitty, MeowLeaks</div>
+            </div>
+        </div>
+        <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;" class="reveal">
+            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.8rem;text-align:center;">
+                <div style="font-size:1.4rem;font-weight:900;color:#e63946;">9/20</div>
+                <div style="font-size:0.65rem;color:#94a3b8;">African incidents<br>meeting ≥0.7 threshold</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.8rem;text-align:center;">
+                <div style="font-size:1.4rem;font-weight:900;color:#f4a261;">30+</div>
+                <div style="font-size:0.65rem;color:#94a3b8;">elections targeted by<br>Team Jorge globally</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.8rem;text-align:center;">
+                <div style="font-size:1.4rem;font-weight:900;color:#6aafd4;">6</div>
+                <div style="font-size:0.65rem;color:#94a3b8;">African countries targeted by<br>Archimedes Group (Facebook 2019)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 14 — SOUTH AFRICA: THREE ATTACK TRACKS ═══ -->
+<div class="slide slide-14" data-slide="14" data-notes="<strong>South Africa accounts for 9 of 20 African cases in the dataset</strong> — the most of any African country. It is at the intersection of three distinct attack tracks. | <strong>Track 1 — Criminal ransomware:</strong> Transnet (July 2021): Death Kitty/HelloKitty. Ports at 10% capacity. 60%+ of SA container traffic disrupted. Force majeure declared. No ransom paid. Active Directory rebuilt. TransUnion (March 2022): brute-forced with 'Password'. 54M records claimed, 3M confirmed. Banks approached for 'insurance fees'. Cell C (2024): RansomHouse. 7.7M subscribers, 2TB published. MTN (April 2025): 290M subscribers across 18 countries. Astral Foods (March 2025): R20M profit hit. | <strong>Track 2 — Foreign state influence:</strong> Russian-linked CIB targeting SA elections (2019, 2024). SA's ICJ genocide case against Israel triggered Israeli information operations (DFRLab documented). Trump/AfriForum coercive narrative amplified on social media. BRICS non-alignment makes SA a target for multiple competing influence tracks. | <strong>Track 3 — Domestic political:</strong> Bell Pottinger's 'white monopoly capital' CIB campaign for the Guptas (2016–17) — textbook domestic influence-as-a-service. Exposed by PRCA 2017; Bell Pottinger expelled and dissolved. Paid influencer networks across political parties today. WhatsApp closed-chain amplification. | <strong>SA is unique:</strong> Only country in this analysis simultaneously targeted by all three tracks — requiring three different institutional responses.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:380px;height:380px;top:-90px;right:-70px;background:#e63946;opacity:0.09;"></div>
+        <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-40px;background:#457b9d;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Home Ground</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">South Africa: Three Simultaneous <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Attack Tracks</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;" class="reveal">
+            <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.22);border-radius:10px;padding:1rem;">
+                <div style="color:#e63946;font-weight:700;font-size:0.8rem;text-transform:uppercase;margin-bottom:0.5rem;">💀 Criminal Ransomware</div>
+                <ul style="font-size:0.69rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li><strong style="color:#cbd5e1;">Transnet 2021</strong> — ports at 10%, 60%+ container traffic disrupted</li>
+                    <li><strong style="color:#cbd5e1;">TransUnion 2022</strong> — 54M records; password was "Password"</li>
+                    <li><strong style="color:#cbd5e1;">Cell C 2024</strong> — 7.7M subscribers; 2TB published</li>
+                    <li><strong style="color:#cbd5e1;">MTN 2025</strong> — 290M subscribers, 18 countries</li>
+                    <li><strong style="color:#cbd5e1;">Astral Foods 2025</strong> — R20M profit hit</li>
+                </ul>
+            </div>
+            <div style="background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.22);border-radius:10px;padding:1rem;">
+                <div style="color:#f4a261;font-weight:700;font-size:0.8rem;text-transform:uppercase;margin-bottom:0.5rem;">🌐 Foreign State Influence</div>
+                <ul style="font-size:0.69rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Russian CIB targeting SA elections (2019, 2024)</li>
+                    <li>Israeli info ops post-ICJ genocide case</li>
+                    <li>Trump/AfriForum coercive narratives</li>
+                    <li>BRICS non-alignment = multiple competing foreign influence tracks</li>
+                </ul>
+            </div>
+            <div style="background:rgba(69,123,157,0.08);border:1px solid rgba(69,123,157,0.22);border-radius:10px;padding:1rem;">
+                <div style="color:#6aafd4;font-weight:700;font-size:0.8rem;text-transform:uppercase;margin-bottom:0.5rem;">🏠 Domestic Political</div>
+                <ul style="font-size:0.69rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Bell Pottinger 'white monopoly capital' CIB for Guptas (2016–17)</li>
+                    <li>Paid influencer networks across political parties</li>
+                    <li>WhatsApp closed-chain amplification</li>
+                    <li>No moderation at African-language scale</li>
+                </ul>
+            </div>
+        </div>
+        <div style="margin-top:12px;padding:9px 14px;background:rgba(230,57,70,0.07);border-left:3px solid #e63946;border-radius:0 8px 8px 0;" class="reveal">
+            <p style="font-size:0.71rem;color:#cbd5e1;margin:0;"><strong style="color:#e63946;">SA is unique:</strong> Only country simultaneously targeted by criminal ransomware, foreign state influence ops, AND domestic commercial CIB — each requiring a different institutional response.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 15 — NO ONE-SIZE-FITS-ALL RESPONSE ═══ -->
+<div class="slide slide-15" data-slide="15" data-notes="<strong>The critical framing for the response section — and the hardest thing for audiences to internalise.</strong> One of the most common mistakes in policy response to hybrid threats is treating them as a single problem requiring a single solution. They are not. | <strong>The three-track, three-response model:</strong> Criminal ransomware is primarily a cybersecurity, law-enforcement, and business-continuity problem — it needs SOC analysts, incident responders, the Hawks (DPCI cybercrime unit), and the Information Regulator. Foreign state influence is a geopolitical, diplomatic, and societal resilience problem — it needs DIRCO, SSA, the Electoral Commission (IEC), civil-society fact-checkers, and platform-policy engagement. Domestic commercial disinformation is a media-freedom, electoral-regulation, and platform-governance problem — it needs the IEC, Press Ombudsman, SANEF, Africa Check, and ICASA. | <strong>The risk of mismatched responses:</strong> A cybersecurity tool deployed against a CIB influence campaign achieves nothing — you cannot firewall a WhatsApp narrative. A fact-checking response against ransomware achieves nothing. A diplomatic demarche against a criminal RaaS affiliate achieves nothing. Matching response to threat type is the fundamental discipline. | <strong>SA is unique — and this is both a burden and an opportunity:</strong> South Africa is the only country in this analysis facing all three tracks simultaneously. That means it needs all three response frameworks running in parallel — and most organisations are only resourced for one. But it also means SA has the motivation, the expertise, and the scale to build the institutional frameworks that the rest of Africa can learn from. | <strong>Practical action for this audience:</strong> Step 1: map which of the three tracks your organisation faces. Step 2: ensure your IR plan spans technical (SOC/IR), legal (POPIA s.22, SABRIC, Hawks), and strategic (crisis comms, stakeholder management) dimensions. Step 3: engage the wider ecosystem — you cannot win alone. | <strong>Key SA institutions:</strong> POPIA s.22 = 72-hour notification obligation to Information Regulator. SABRIC = South African Banking Risk Centre. AfricaCERT = regional CERT coordination. SAFPS = Southern Africa Fraud Prevention Service — free consumer protective registration for identity-fraud victims.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:370px;height:370px;top:-80px;right:-70px;background:#457b9d;opacity:0.10;"></div>
+        <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#e63946;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Response Framework</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">No <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">One-Size-Fits-All</span> Response</h2>
+        <p style="font-size:0.78rem;color:#cbd5e1;margin-bottom:1.2rem;max-width:800px;" class="reveal">Each hybrid attack track requires a different institutional response. Mismatching response to threat type wastes resources and leaves real vulnerabilities unaddressed.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;" class="reveal">
+            <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.25);border-radius:12px;padding:1.1rem;">
+                <div style="color:#e63946;font-weight:700;font-size:0.78rem;text-transform:uppercase;margin-bottom:0.6rem;">💀 Criminal Ransomware</div>
+                <div style="font-size:0.7rem;color:#94a3b8;line-height:1.6;">
+                    <div style="margin-bottom:0.4rem;"><strong style="color:#cbd5e1;">Who responds:</strong> CISO, IR team, law enforcement (Hawks), Information Regulator</div>
+                    <div style="margin-bottom:0.4rem;"><strong style="color:#cbd5e1;">Legal hook:</strong> POPIA s.22 — notify regulator within 72 hours</div>
+                    <div><strong style="color:#cbd5e1;">Key tools:</strong> Offline backups, network segmentation, SABRIC, AfricaCERT</div>
+                </div>
+            </div>
+            <div style="background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.25);border-radius:12px;padding:1.1rem;">
+                <div style="color:#f4a261;font-weight:700;font-size:0.78rem;text-transform:uppercase;margin-bottom:0.6rem;">🌐 Foreign State Influence</div>
+                <div style="font-size:0.7rem;color:#94a3b8;line-height:1.6;">
+                    <div style="margin-bottom:0.4rem;"><strong style="color:#cbd5e1;">Who responds:</strong> DIRCO, SSA, Electoral Commission, media, civil society</div>
+                    <div style="margin-bottom:0.4rem;"><strong style="color:#cbd5e1;">Legal hook:</strong> Electoral Act; RICA; proposed Online Safety Bill</div>
+                    <div><strong style="color:#cbd5e1;">Key tools:</strong> Platform engagement, prebunking, diplomatic attribution</div>
+                </div>
+            </div>
+            <div style="background:rgba(69,123,157,0.08);border:1px solid rgba(69,123,157,0.25);border-radius:12px;padding:1.1rem;">
+                <div style="color:#6aafd4;font-weight:700;font-size:0.78rem;text-transform:uppercase;margin-bottom:0.6rem;">🏠 Domestic CIB</div>
+                <div style="font-size:0.7rem;color:#94a3b8;line-height:1.6;">
+                    <div style="margin-bottom:0.4rem;"><strong style="color:#cbd5e1;">Who responds:</strong> IEC, Press Ombudsman, SANEF, fact-checkers (Africa Check)</div>
+                    <div style="margin-bottom:0.4rem;"><strong style="color:#cbd5e1;">Legal hook:</strong> Electoral Code; ICASA; party funding disclosure</div>
+                    <div><strong style="color:#cbd5e1;">Key tools:</strong> Monitoring, media literacy, influencer transparency</div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:12px;padding:9px 14px;background:rgba(244,162,97,0.07);border-left:3px solid #f4a261;border-radius:0 8px 8px 0;" class="reveal">
+            <p style="font-size:0.71rem;color:#cbd5e1;margin:0;"><strong style="color:#f4a261;">Key insight:</strong> SA is unique in facing all three tracks simultaneously — which means it needs all three response frameworks operating in parallel. Most organisations are only resourced for one.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 16 — MULTILATERAL FRAMEWORKS ═══ -->
+<div class="slide slide-16" data-slide="16" data-notes="<strong>Multilateral frameworks — what exists and what it delivers:</strong> | <strong>EEAS / EDMO (EU):</strong> European External Action Service publishes annual FIMI reports. European Digital Media Observatory coordinates fact-checkers across EU. Rapid Alert System (RAS) enables member states to share disinformation threat intelligence in near-real time. EU AI Act (2025) includes provisions on AI-generated content labelling — first major regulatory framework. | <strong>ITU (UN):</strong> International Telecommunication Union's Global Cybersecurity Agenda. ITU-IMPACT (International Multilateral Partnership Against Cyber Threats) — 157 member countries. Provides threat intelligence, training, and incident response support to developing nations. SA is a member. | <strong>African Union:</strong> Malabo Convention (AU Convention on Cybersecurity and Personal Data Protection, 2014) — only 14 of 55 AU members have ratified as of 2025. This is a significant governance gap. The AU's Computer Incident Response Team (AU-CIRT) was established in 2020. | <strong>OASIS Open:</strong> The STIX/TAXII standards used to share cyber threat intelligence globally. OASIS is now developing STIX extensions to model FIMI/influence operations alongside traditional cyber threats — directly relevant to this audience. | <strong>FIRST (Forum of Incident Response and Security Teams):</strong> Global network of 700+ CERTs and IRTs. Provides protocols for coordinated disclosure and incident sharing. AfricaCERT is affiliated. | <strong>G7 Rapid Response Mechanism:</strong> Shares election-integrity threat intelligence among G7 governments. SA is not G7 but benefits from shared frameworks via bilateral relationships. | <strong>The gap:</strong> All these frameworks are primarily designed for and by Global North actors. African civil society organisations like Paradigm Initiative, Research ICT Africa, and CIPESA (Collaboration on International ICT Policy for East and Southern Africa) are building continental capacity — but under-resourced relative to the threat.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:380px;height:380px;top:-90px;right:-70px;background:#4fcab9;opacity:0.09;"></div>
+        <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-40px;background:#457b9d;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Global Governance</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">Multilateral <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Frameworks &amp; Gaps</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="reveal">
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:0.95rem;border-left:3px solid #4fcab9;">
+                <div style="font-size:0.8rem;font-weight:700;color:#4fcab9;margin-bottom:0.5rem;">🇪🇺 EEAS / EDMO (EU)</div>
+                <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">Annual FIMI reports; Rapid Alert System for near-real-time disinformation threat sharing; EU AI Act (2025) first regulatory framework for AI-generated content labelling.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:0.95rem;border-left:3px solid #6aafd4;">
+                <div style="font-size:0.8rem;font-weight:700;color:#6aafd4;margin-bottom:0.5rem;">🌐 ITU / ITU-IMPACT</div>
+                <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">157 member countries. Provides threat intelligence, training, and incident response to developing nations. SA is a member. Global Cybersecurity Agenda framework.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:0.95rem;border-left:3px solid #f4a261;">
+                <div style="font-size:0.8rem;font-weight:700;color:#f4a261;margin-bottom:0.5rem;">🌍 African Union</div>
+                <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">Malabo Convention (2014): only <strong style="color:#e63946;">14 of 55 AU members ratified</strong> as of 2025. AU-CIRT established 2020. Major governance gap — continental framework exists but enforcement doesn't.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:0.95rem;border-left:3px solid #e63946;">
+                <div style="font-size:0.8rem;font-weight:700;color:#e63946;margin-bottom:0.5rem;">🔬 OASIS / STIX + FIRST</div>
+                <p style="font-size:0.7rem;color:#94a3b8;margin:0;line-height:1.5;">OASIS developing STIX extensions to model FIMI alongside traditional cyber threats. FIRST: 700+ global CERTs including AfricaCERT for regional incident coordination.</p>
+            </div>
+        </div>
+        <div style="margin-top:12px;padding:9px 14px;background:rgba(230,57,70,0.07);border-left:3px solid #e63946;border-radius:0 8px 8px 0;" class="reveal">
+            <p style="font-size:0.71rem;color:#cbd5e1;margin:0;"><strong style="color:#e63946;">The gap:</strong> All major frameworks are primarily designed by Global North actors. African civil society (Paradigm Initiative, Research ICT Africa, CIPESA) is building continental capacity — but severely under-resourced relative to the threat scale.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 17 — WHAT FIRMS CAN DO ═══ -->
+<div class="slide slide-17" data-slide="17" data-notes="<strong>Practical steps for security leaders at the firm level.</strong> This slide is designed for the CISO/CSO/security practitioner audience. | <strong>Detect the hybrid:</strong> Most SOCs are wired to detect technical indicators — malware signatures, network anomalies. They are NOT wired to detect influence operations or social engineering precursors. You need to instrument your threat intelligence for narrative threats, not just technical IoCs. Monitor leak sites, dark web forums, and social media for brand and executive mentions. | <strong>Defend the human layer:</strong> MGM and Arup both show that the human was the vulnerability, not the technology. Help-desk authentication: require a manager callback on a known number + a second factor for any credential reset. Financial authorisation: multi-channel out-of-band verification for large transfers (Arup's lesson). Train staff to verify video calls independently — one callback to a known mobile number would have saved $25.6M. | <strong>Build resilience:</strong> Transnet recovered without paying ransom because they had and executed a disaster-recovery plan. Active Directory rebuild in 2 weeks. Offline backups, OT/IT segmentation, annual tabletop exercises. | <strong>Engage the ecosystem:</strong> POPIA Section 22: notify the Information Regulator within 72 hours. Engage SABRIC (South African Banking Risk Centre), the Hawks (DPCI cybercrime unit), AfricaCERT. Register consumers with SAFPS for SIM-swap and identity-fraud protection. | <strong>Reputation and communications planning:</strong> The leak-site threat is a communications crisis as well as a technical incident. Have a crisis comms plan that addresses: what do we say to customers whose data was exposed? How do we counter false ransomware-group narratives about our security posture? Transnet's public communications were praised for transparency.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:360px;height:360px;top:-80px;right:-70px;background:#457b9d;opacity:0.10;"></div>
+        <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#4fcab9;opacity:0.08;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">For Security Leaders</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">What <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Firms</span> Can Do</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="reveal">
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #e63946;">
+                <div style="font-size:0.82rem;font-weight:700;color:#e63946;margin-bottom:0.5rem;">🔭 Detect the Hybrid</div>
+                <ul style="font-size:0.7rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Wire SOC for narrative threats, not just technical IoCs</li>
+                    <li>Monitor leak sites &amp; dark web for brand/exec mentions</li>
+                    <li>Track social media for executive impersonation</li>
+                </ul>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #f4a261;">
+                <div style="font-size:0.82rem;font-weight:700;color:#f4a261;margin-bottom:0.5rem;">🛡️ Defend the Human Layer</div>
+                <ul style="font-size:0.7rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Help desk: callback on known number + manager approval</li>
+                    <li>Finance: multi-channel out-of-band for large transfers</li>
+                    <li>Train staff: one call to a known number saves millions</li>
+                </ul>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #6aafd4;">
+                <div style="font-size:0.82rem;font-weight:700;color:#6aafd4;margin-bottom:0.5rem;">💪 Build Resilience</div>
+                <ul style="font-size:0.7rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Offline backups + tested DR plan (Transnet model)</li>
+                    <li>Segment OT/IT networks</li>
+                    <li>Annual ransomware tabletop exercises</li>
+                </ul>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;border-left:3px solid #4fcab9;">
+                <div style="font-size:0.82rem;font-weight:700;color:#4fcab9;margin-bottom:0.5rem;">🤝 Engage the Ecosystem</div>
+                <ul style="font-size:0.7rem;color:#94a3b8;margin:0;padding-left:0.9rem;line-height:1.6;">
+                    <li>Notify Information Regulator within 72h (POPIA s.22)</li>
+                    <li>Engage SABRIC, Hawks, AfricaCERT, SAFPS</li>
+                    <li>Plan crisis comms for the leak-site narrative threat</li>
+                </ul>
+            </div>
+        </div>
+        <p style="font-size:0.7rem;color:#94a3b8;text-align:center;margin-top:10px;" class="reveal">Ransomware extortion is simultaneously a technical breach AND a psychological influence operation — your IR plan must address both tracks</p>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 18 — WHAT COMMUNITIES CAN DO ═══ -->
+<div class="slide slide-18" data-slide="18" data-notes="<strong>Community-level response — the most under-resourced but essential layer.</strong> Cybersecurity practitioners tend to focus on the firm and the technical. But hybrid operations targeting public opinion, elections, and community trust require community-level defences that no CISO can deliver alone. | <strong>Media literacy and prebunking:</strong> Prebunking (inoculation theory) is evidenced to be more effective than fact-checking — exposing people to a weakened form of a manipulation technique before they encounter it. Studies show prebunking reduces susceptibility to disinformation by 20–30%. The problem: prebunking requires investment in local language content production. In SA, this means Zulu, Xhosa, Sotho, Afrikaans — not just English. | <strong>Trusted community messengers:</strong> Public health research (COVID, Ebola) shows that vaccine hesitancy disinformation is most effectively countered by trusted community leaders — religious figures, traditional healers, community health workers — not government spokespeople or fact-checking websites. The same principle applies to political disinformation. | <strong>Platform accountability:</strong> Civil society organisations in SA (Media Monitoring Africa, Right2Know Campaign) have successfully pressured platforms on content moderation failures. The Meta decision to end third-party fact-checking in the US (January 2025) is a concern — Africa Check (headquartered in SA) is one of the affected fact-checking partners. | <strong>Digital rights and privacy:</strong> SIM-swap fraud and identity theft (enabled by data breaches like TransUnion) harm ordinary citizens. Community-level SAFPS registration is a practical tool. Consumer education about what to do if your data has been breached. | <strong>Election observation and monitoring:</strong> EISA (Electoral Institute for Sustainable Democracy in Africa), SADC Election Support Network, and domestic bodies like the IEC provide election integrity frameworks. But they need to integrate digital/cyber threat monitoring alongside traditional election observation.">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:370px;height:370px;top:-80px;right:-70px;background:#f4a261;opacity:0.09;"></div>
+        <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:#4fcab9;opacity:0.07;"></div>
+    </div>
+    <div class="content">
+        <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-2 reveal">Civil Society &amp; Citizens</p>
+        <h2 class="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-bold mb-4 reveal">What <span style="background:linear-gradient(to right,#e63946,#f4a261);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Communities</span> Can Do</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;" class="reveal">
+            <div style="background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.22);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">🧠</div>
+                <div style="color:#f4a261;font-weight:700;font-size:0.78rem;margin-bottom:0.4rem;">Prebunking &gt; Fact-Checking</div>
+                <p style="font-size:0.69rem;color:#94a3b8;margin:0;line-height:1.5;">Inoculation reduces susceptibility by 20–30%. Must be in local languages: Zulu, Xhosa, Sotho, Hausa, Swahili — not English only.</p>
+            </div>
+            <div style="background:rgba(79,202,185,0.08);border:1px solid rgba(79,202,185,0.22);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">👥</div>
+                <div style="color:#4fcab9;font-weight:700;font-size:0.78rem;margin-bottom:0.4rem;">Trusted Community Messengers</div>
+                <p style="font-size:0.69rem;color:#94a3b8;margin:0;line-height:1.5;">Health disinformation (COVID, polio) countered most effectively by religious leaders and community health workers — not government spokespeople. Same for political disinformation.</p>
+            </div>
+            <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.22);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">📱</div>
+                <div style="color:#e63946;font-weight:700;font-size:0.78rem;margin-bottom:0.4rem;">Platform Accountability</div>
+                <p style="font-size:0.69rem;color:#94a3b8;margin:0;line-height:1.5;">Media Monitoring Africa, Right2Know successfully pressured platforms. Meta ending 3rd-party fact-checking affects Africa Check (SA-headquartered). Advocate for African-language moderation investment.</p>
+            </div>
+            <div style="background:rgba(69,123,157,0.08);border:1px solid rgba(69,123,157,0.22);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">🔐</div>
+                <div style="color:#6aafd4;font-weight:700;font-size:0.78rem;margin-bottom:0.4rem;">Digital Rights &amp; Privacy</div>
+                <p style="font-size:0.69rem;color:#94a3b8;margin:0;line-height:1.5;">Register with SAFPS if data breached. Teach communities: what to do if your ID is in a breach. SIM-swap fraud is a direct consequence of ransomware group data sales.</p>
+            </div>
+            <div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.22);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">🗳️</div>
+                <div style="color:#c084fc;font-weight:700;font-size:0.78rem;margin-bottom:0.4rem;">Election Integrity Monitoring</div>
+                <p style="font-size:0.69rem;color:#94a3b8;margin:0;line-height:1.5;">EISA, SADC Election Support Network, IEC need digital/cyber threat monitoring integrated with traditional election observation. Report CIB activity to platforms and IEC.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:10px;padding:1rem;">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">🔬</div>
+                <div style="color:#f1f5f9;font-weight:700;font-size:0.78rem;margin-bottom:0.4rem;">Build Local Research Capacity</div>
+                <p style="font-size:0.69rem;color:#94a3b8;margin:0;line-height:1.5;">Paradigm Initiative, CIPESA, Research ICT Africa building continental capacity. Under-resourced relative to the threat. Support and fund African researchers studying African hybrid threats.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 19 — CLOSING: MANDELA + OASIS ═══ -->
+<div class="slide slide-19" data-slide="19" data-notes="<strong>Closing slide — speaker notes.</strong> Return to the 4-quadrant model. The argument: we began our security work focused on intrusion (the classic CIA triad). Over time we added exploitation as a recognised threat category (ransomware, fraud). But abuse and manipulation have been treated as 'not our problem' by security teams — left to content moderators, journalists, and civil society. The hybridisation of operations means this separation is no longer tenable. | <strong>Nelson Mandela quote:</strong> 'Let freedom reign' — spoken at his inauguration on 10 May 1994 at the Union Buildings, Pretoria. Full context: 'Let freedom reign. The sun shall never set on so glorious a human achievement.' | <strong>The OASIS argument:</strong> If we are to extend Mandela's vision of freedom to the digital age, we must protect: freedom from intrusion (traditional cybersecurity); freedom from manipulation (fact-checking, prebunking, platform accountability — but NOT only veracity-based tools); freedom from abuse (platform governance, hate speech law, content moderation); freedom from exploitation (cybercrime law, ransomware response, consumer protection). | <strong>Call to action for this audience:</strong> The STIX/OASIS standards extension work is open to participation. The EEAS, ITU, AU Malabo Convention, and AU-CIRT all provide frameworks — but technical communities must drive the implementation. South Africa has a unique role: as a country simultaneously facing all four quadrant threats, it has both the motivation and the expertise to lead African responses. | <strong>Final line for the talk:</strong> 'Freedom in the digital age requires us to defend all four quadrants — not just the one our job title assigns us to.'">
+    <div class="gradient-mesh">
+        <div class="blob" style="width:500px;height:500px;top:-120px;right:-100px;background:#e63946;opacity:0.14;"></div>
+        <div class="blob" style="width:320px;height:320px;bottom:-80px;left:-60px;background:#f4a261;opacity:0.10;"></div>
+        <div class="blob" style="width:240px;height:240px;top:40%;left:10%;background:#457b9d;opacity:0.09;"></div>
+    </div>
+    <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;"></canvas>
+    <div class="content">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;">
+            <div>
+                <p class="text-[0.72rem] uppercase tracking-[6px] text-text-muted mb-3 reveal">Closing</p>
+                <h2 class="font-display text-[clamp(1.6rem,3.5vw,2.6rem)] font-black mb-4 reveal" style="line-height:1.2;">
+                    <span style="background:linear-gradient(to bottom right,#e63946,#f4a261,#e63946);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Let Freedom Reign</span>
+                </h2>
+                <blockquote style="border-left:3px solid #f4a261;padding-left:1rem;margin:0 0 1.2rem;" class="reveal">
+                    <p style="font-size:0.85rem;color:#cbd5e1;font-style:italic;line-height:1.6;margin:0;">"Let freedom reign. The sun shall never set on so glorious a human achievement."</p>
+                    <cite style="font-size:0.7rem;color:#94a3b8;display:block;margin-top:0.4rem;">— Nelson Mandela, Inauguration, Pretoria, 10 May 1994</cite>
+                </blockquote>
+                <div class="reveal">
+                    <p style="font-size:0.75rem;color:#94a3b8;line-height:1.6;margin:0 0 0.8rem;">That freedom must extend to the digital age — not just freedom from <span style="color:#e63946;font-weight:600;">intrusion</span>, but freedom from <span style="color:#f4a261;font-weight:600;">manipulation</span>, freedom from <span style="color:#6aafd4;font-weight:600;">abuse</span>, and freedom from <span style="color:#4fcab9;font-weight:600;">exploitation</span>.</p>
+                    <p style="font-size:0.72rem;color:#94a3b8;font-style:italic;line-height:1.5;border-top:1px solid rgba(255,255,255,0.08);padding-top:0.7rem;">"Freedom in the digital age requires us to defend all four quadrants — not just the one our job title assigns us to."</p>
+                </div>
+            </div>
+            <div class="reveal" style="padding-left:1rem;">
+                <div style="width:100%;padding-bottom:100%;position:relative;">
+                    <svg viewBox="0 0 400 400" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                        <circle cx="200" cy="200" r="190" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/>
+                        <circle cx="200" cy="200" r="36" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+                        <line x1="200" y1="10" x2="200" y2="390" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <line x1="10" y1="200" x2="390" y2="200" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="105" cy="105" r="80" fill="#e63946" fill-opacity="0.15" stroke="#e63946" stroke-opacity="0.4" stroke-width="1.5"/>
+                        <text x="105" y="92" text-anchor="middle" fill="#e63946" font-size="12.5" font-weight="700" font-family="DM Sans,sans-serif">INTRUSION</text>
+                        <text x="105" y="108" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="DM Sans,sans-serif">Theft · Sabotage</text>
+                        <circle cx="295" cy="105" r="80" fill="#f4a261" fill-opacity="0.15" stroke="#f4a261" stroke-opacity="0.4" stroke-width="1.5"/>
+                        <text x="295" y="92" text-anchor="middle" fill="#f4a261" font-size="12.5" font-weight="700" font-family="DM Sans,sans-serif">MANIPULATION</text>
+                        <text x="295" y="108" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="DM Sans,sans-serif">Disinfo · Propaganda</text>
+                        <circle cx="105" cy="295" r="80" fill="#457b9d" fill-opacity="0.15" stroke="#457b9d" stroke-opacity="0.4" stroke-width="1.5"/>
+                        <text x="105" y="282" text-anchor="middle" fill="#6aafd4" font-size="12.5" font-weight="700" font-family="DM Sans,sans-serif">ABUSE</text>
+                        <text x="105" y="298" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="DM Sans,sans-serif">Hate · Doxxing</text>
+                        <circle cx="295" cy="295" r="80" fill="#2a9d8f" fill-opacity="0.15" stroke="#2a9d8f" stroke-opacity="0.4" stroke-width="1.5"/>
+                        <text x="295" y="282" text-anchor="middle" fill="#4fcab9" font-size="12.5" font-weight="700" font-family="DM Sans,sans-serif">EXPLOITATION</text>
+                        <text x="295" y="298" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="DM Sans,sans-serif">Fraud · Ransomware</text>
+                        <text x="200" y="196" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="8.5" font-family="DM Sans,sans-serif">ICT</text>
+                        <text x="200" y="208" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="8.5" font-family="DM Sans,sans-serif">Weapon</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav-controls">
+    <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
+    <div class="slide-dots" id="dots"></div>
+    <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+    <span class="slide-counter" id="counter">1 / 19</span>
+</div>
+
+<script>
+    let current = 1;
+    const total = document.querySelectorAll('.slide').length;
+    const dotsC = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    const notesPanel = document.getElementById('notes-panel');
+    for(let i=1;i<=total;i++){const d=document.createElement('div');d.className='dot'+(i===1?' active':'');d.onclick=()=>goToSlide(i);dotsC.appendChild(d);}
+    function goToSlide(n){
+        const prev=document.querySelector('.slide.active');
+        const next=document.querySelector(`.slide[data-slide="${n}"]`);
+        if(prev)prev.classList.remove('active');
+        if(next){next.classList.add('active');animateSlide(next);updateNotes(next);}
+        current=n;updateNav();
+    }
+    function changeSlide(dir){let n=current+dir;if(n<1)n=total;if(n>total)n=1;goToSlide(n);}
+    function updateNav(){document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i+1===current);});counter.textContent=current+' / '+total;}
+    function updateNotes(slide){if(notesPanel.style.display!=='none'){notesPanel.innerHTML=slide.dataset.notes||'No notes for this slide.';}}
+    function toggleNotes(){const v=notesPanel.style.display==='none'||!notesPanel.style.display;notesPanel.style.display=v?'block':'none';if(v)updateNotes(document.querySelector('.slide.active'));}
+    function animateSlide(slide){
+        slide.querySelectorAll('.reveal').forEach((el,i)=>{
+            el.style.transition='none';el.style.opacity='0';el.style.transform='translateY(18px)';
+            el.offsetHeight;
+            const delay=i*0.08;
+            el.style.transition=`opacity 0.35s ease ${delay}s, transform 0.35s ease ${delay}s`;
+            el.style.opacity='1';el.style.transform='translateY(0px)';
+        });
+        slide.querySelectorAll('.bar-fill:not(.fill-init)').forEach((bar,i)=>{
+            bar.classList.add('fill-init');
+            bar.style.width='0%';bar.style.transition=`width 0.7s ease ${i*0.1}s`;
+            bar.offsetHeight;bar.style.width=bar.dataset.width+'%';
+        });
+    }
+    document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();changeSlide(1);}if(e.key==='ArrowLeft'){e.preventDefault();changeSlide(-1);}});
+    let touchStartX=0;
+    document.addEventListener('touchstart',(e)=>{touchStartX=e.touches[0].clientX;});
+    document.addEventListener('touchend',(e)=>{const diff=touchStartX-e.changedTouches[0].clientX;if(Math.abs(diff)>50)changeSlide(diff>0?1:-1);});
+    document.addEventListener('mousemove',(e)=>{
+        const s=document.querySelector('.mouse-spotlight');
+        if(s)s.style.background=`radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px,rgba(230,57,70,0.06),transparent 40%)`;
+    });
+    window.initParticles=function(canvas,opts){
+        if(!canvas)return;
+        const ctx=canvas.getContext('2d');
+        canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;
+        const cnt=opts.count||40;let mx=-1000,my=-1000;
+        const ps=Array.from({length:cnt},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,size:Math.random()*2.2+0.8,alpha:Math.random()*.3+0.1}));
+        if(opts.interactive!==false){canvas.addEventListener('mousemove',(e)=>{const r=canvas.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;});canvas.addEventListener('mouseleave',()=>{mx=-1000;my=-1000;});}
+        (function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);ps.forEach(p=>{if(opts.interactive!==false){const dx=p.x-mx,dy=p.y-my,dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){const f=(120-dist)/120*2;p.vx+=(dx/dist)*f*.1;p.vy+=(dy/dist)*f*.1;}}p.vx*=.98;p.vy*=.98;p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle=`rgba(230,57,70,${p.alpha})`;ctx.fill();});requestAnimationFrame(anim);})();
+    };
+    document.querySelectorAll('.particle-canvas').forEach(c=>window.initParticles(c,{interactive:true,count:45}));
+    try{animateSlide(document.querySelector('.slide.active'));updateNotes(document.querySelector('.slide.active'));}catch(e){}
+</script>
+</body>
+</html>
