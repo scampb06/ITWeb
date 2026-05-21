@@ -7,8 +7,10 @@ title: Hybrid cyber and information operations: how attackers blend disruption a
 
 | Resource | Description |
 |---|---|
-| [Keynote Presentation](analysis/itweb_hybrid_keynote.html) | ITWeb Security Summit 2026 — "Hybrid Cyber and Information Operations: How Attackers Blend Disruption and Influence in 2026" |
-| [Keynote Presentation (shorter)](analysis/itweb_keynote_v2.html) | Shorter version of the ITWeb Security Summit 2026 keynote presentation |
+| [Keynote Presentation (Claude - longer)](analysis/itweb_hybrid_keynote.html) | ITWeb Security Summit 2026 — "Hybrid Cyber and Information Operations: How Attackers Blend Disruption and Influence in 2026" |
+| [Keynote Presentation (Claude - shorter)](analysis/itweb_keynote_v2.html) | Shorter version of the ITWeb Security Summit 2026 plenary presentation |
+| [Keynote Presentation (Claude - in-between)](analysis/itweb_keynote_v5.html) | Combined version of the ITWeb Security Summit 2026 plenary presentation |
+| [Keynote Presentation (NotebookLM)](analysis/the-hybrid-coalescence.html) | Alternative NotebookLM version of the ITWeb Security Summit 2026 plenary presentation |
 | [Africa Country Dashboard](analysis/africa-country-dashboard-updated.html) | Interactive dashboard: map of Africa with per country statistics on population, economic indicators, and disinformation. Filter by region and choose metrics for scatter plot |
 
 ---
@@ -27,6 +29,7 @@ Background research papers prepared for the ITWeb Security Summit 2026 keynote. 
 | [Information Manipulation & Hate Speech](analysis/information-manipulation.md) | Real-world harms to ordinary Africans from disinformation and hate speech — deaths, violence, economic loss, and psychological injury |
 | [Countermeasures & Frameworks](analysis/countermeasures.md) | Elite and community responses to hybrid operations; the 2×2 matrix of countermeasures by audience and information-access level |
 | [Cunliffe-Jones Analysis](analysis/cunliffe-jones-analysis.md) | The 12 most harmful or high-impact false claims identified in the African fact-checking database |
+| [Perplexity Pro / Claude Opus 4.7 Q&A](analysis/perplexity-qa.md) | Questions and answers generated using Perplexity Pro and Claude Opus 4.7 on hybrid cyber-influence operations |
 
 ---
 
