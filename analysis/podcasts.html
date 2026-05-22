@@ -17,7 +17,6 @@
       padding: 0;
     }
 
-    /* ── Header ── */
     .site-header {
       background: #1b3a6b;
       color: #fff;
@@ -38,7 +37,6 @@
       font-size: 1em;
     }
 
-    /* ── Main content ── */
     .main-content {
       max-width: 860px;
       margin: 28px auto;
@@ -58,7 +56,6 @@
       margin-bottom: 28px;
     }
 
-    /* ── Podcast card ── */
     .podcast-card {
       background: #fff;
       border: 1px solid #d0d7de;
@@ -95,6 +92,7 @@
       color: #94a3b8;
       margin-top: 3px;
       font-family: "SFMono-Regular", Consolas, monospace;
+      word-break: break-all;
     }
 
     audio {
@@ -104,7 +102,6 @@
       accent-color: #1b3a6b;
     }
 
-    /* ── Responsive ── */
     @media (max-width: 600px) {
       .main-content { padding: 0 12px; }
       .podcast-card { padding: 14px 16px; }
@@ -120,34 +117,109 @@
 
 <main class="main-content">
   <h1>Podcasts</h1>
-  <p class="subtitle">Audio companion pieces to the ITWeb Security Summit 2026 keynote on hybrid cyber and information operations. Click play to listen in your browser, or use your browser's download option to save for offline listening.</p>
+  <p class="subtitle">Audio companion pieces to the ITWeb Security Summit 2026 keynote on hybrid cyber and information operations, available in seven languages. Click play to listen in your browser, or use your browser's download option to save for offline listening.</p>
 
-  <!-- ── English ── -->
+  <!-- English -->
   <div class="podcast-card">
     <div class="card-header">
       <span class="lang-badge">English</span>
       <div>
-        <p class="card-title">Defending South Africa from Narrative Warfare</p>
-        <p class="card-filename">English_defending_South_Africa_from_narrative_warfare.m4a</p>
+        <p class="card-title">South African Ransomware and Information Operations</p>
+        <p class="card-filename">English_South_African_Ransomware_and_Information_Operations.m4a</p>
       </div>
     </div>
     <audio controls preload="metadata">
-      <source src="podcasts/English_defending_South_Africa_from_narrative_warfare.m4a" type="audio/mp4">
+      <source src="podcasts/English_South_African_Ransomware_and_Information_Operations.m4a" type="audio/mp4">
       Your browser does not support the audio element.
     </audio>
   </div>
 
-  <!-- ── Afrikaans ── -->
+  <!-- Afrikaans -->
   <div class="podcast-card">
     <div class="card-header">
       <span class="lang-badge">Afrikaans</span>
       <div>
-        <p class="card-title">WhatsApp-familiegroepe as die nuwe kuberwapen</p>
-        <p class="card-filename">Afrikaans_WhatsApp_familiegroepe_as_die_nuwe_kuberwapen.m4a</p>
+        <p class="card-title">Jou verstand is die nuwe kuberteiken</p>
+        <p class="card-filename">Afrikaans_jou_verstand_is_die_nuwe_kuberteiken.m4a</p>
       </div>
     </div>
     <audio controls preload="metadata">
-      <source src="podcasts/Afrikaans_WhatsApp_familiegroepe_as_die_nuwe_kuberwapen.m4a" type="audio/mp4">
+      <source src="podcasts/Afrikaans_jou_verstand_is_die_nuwe_kuberteiken.m4a" type="audio/mp4">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <!-- French -->
+  <div class="podcast-card">
+    <div class="card-header">
+      <span class="lang-badge">French</span>
+      <div>
+        <p class="card-title">Cyberattaques et désinformation : le défi sud-africain</p>
+        <p class="card-filename">French_cyberattaques_et_désinformation_le_défi_sud-africain.m4a</p>
+      </div>
+    </div>
+    <audio controls preload="metadata">
+      <source src="podcasts/French_cyberattaques_et_désinformation_le_défi_sud-africain.m4a" type="audio/mp4">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <!-- Portuguese -->
+  <div class="podcast-card">
+    <div class="card-header">
+      <span class="lang-badge">Portuguese</span>
+      <div>
+        <p class="card-title">Cibersegurança e ameaças híbridas em África</p>
+        <p class="card-filename">Portuguese_cibersegurança_e_ameaças_híbridas_em_África.m4a</p>
+      </div>
+    </div>
+    <audio controls preload="metadata">
+      <source src="podcasts/Portuguese_cibersegurança_e_ameaças_híbridas_em_África.m4a" type="audio/mp4">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <!-- Swahili -->
+  <div class="podcast-card">
+    <div class="card-header">
+      <span class="lang-badge">Swahili</span>
+      <div>
+        <p class="card-title">Udukuzi kama silaha ya kisaikolojia Afrika Kusini</p>
+        <p class="card-filename">Swahili_Udukuzi_kama_silaha_ya_kisaikolojia_Afrika_Kusini.m4a</p>
+      </div>
+    </div>
+    <audio controls preload="metadata">
+      <source src="podcasts/Swahili_Udukuzi_kama_silaha_ya_kisaikolojia_Afrika_Kusini.m4a" type="audio/mp4">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <!-- Amharic -->
+  <div class="podcast-card">
+    <div class="card-header">
+      <span class="lang-badge">Amharic</span>
+      <div>
+        <p class="card-title" lang="am">የተቀናጁ የሳይበር እና የመረጃ ተፅዕኖ ጥቃቶች</p>
+        <p class="card-filename">Amharic_የተቀናጁ_የሳይበር_እና_የመረጃ_ተፅዕኖ_ጥቃቶች.m4a</p>
+      </div>
+    </div>
+    <audio controls preload="metadata">
+      <source src="podcasts/Amharic_የተቀናጁ_የሳይበር_እና_የመረጃ_ተፅዕኖ_ጥቃቶች.m4a" type="audio/mp4">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <!-- Arabic (RTL) -->
+  <div class="podcast-card">
+    <div class="card-header">
+      <span class="lang-badge">Arabic</span>
+      <div>
+        <p class="card-title" lang="ar" dir="rtl" style="text-align:right;">لما الهكر يسرق عقلك مش بياناتك</p>
+        <p class="card-filename">لما_الهكر_يسرق_عقلك_مش_بياناتك_Arabic.m4a</p>
+      </div>
+    </div>
+    <audio controls preload="metadata">
+      <source src="podcasts/لما_الهكر_يسرق_عقلك_مش_بياناتك_Arabic.m4a" type="audio/mp4">
       Your browser does not support the audio element.
     </audio>
   </div>
