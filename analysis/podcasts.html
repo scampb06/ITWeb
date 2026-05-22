@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Podcasts — ITWeb Security Summit 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #24292e;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: #1b3a6b;
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .site-header a {
+      color: #a8c8ff;
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+    .site-header a:hover { text-decoration: underline; }
+    .site-header .site-title {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1em;
+    }
+
+    /* ── Main content ── */
+    .main-content {
+      max-width: 860px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 1.5em;
+      color: #1b3a6b;
+      border-bottom: 2px solid #d0d7de;
+      padding-bottom: 8px;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: #555;
+      font-size: 0.9em;
+      margin-bottom: 28px;
+    }
+
+    /* ── Podcast card ── */
+    .podcast-card {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .lang-badge {
+      background: #1b3a6b;
+      color: #fff;
+      font-size: 0.72em;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+    .card-title {
+      font-size: 1.05em;
+      font-weight: 600;
+      color: #1b3a6b;
+      margin: 0;
+    }
+    .card-filename {
+      font-size: 0.75em;
+      color: #94a3b8;
+      margin-top: 3px;
+      font-family: "SFMono-Regular", Consolas, monospace;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 4px;
+      border-radius: 6px;
+      accent-color: #1b3a6b;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .main-content { padding: 0 12px; }
+      .podcast-card { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html">🏠 Home</a>
+  <span class="site-title">ITWeb Security Summit 2026</span>
+</header>
+
+<main class="main-content">
+  <h1>Podcasts</h1>
+  <p class="subtitle">Audio companion pieces to the ITWeb Security Summit 2026 keynote on hybrid cyber and information operations. Click play to listen in your browser, or use your browser's download option to save for offline listening.</p>
+
+  <!-- ── English ── -->
+  <div class="podcast-card">
+    <div class="card-header">
+      <span class="lang-badge">English</span>
+      <div>
+        <p class="card-title">Defending South Africa from Narrative Warfare</p>
+        <p class="card-filename">English_defending_South_Africa_from_narrative_warfare.m4a</p>
+      </div>
+    </div>
+    <audio controls preload="metadata">
+      <source src="podcasts/English_defending_South_Africa_from_narrative_warfare.m4a" type="audio/mp4">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <!-- ── Afrikaans ── -->
+  <div class="podcast-card">
+    <div class="card-header">
+      <span class="lang-badge">Afrikaans</span>
+      <div>
+        <p class="card-title">WhatsApp-familiegroepe as die nuwe kuberwapen</p>
+        <p class="card-filename">Afrikaans_WhatsApp_familiegroepe_as_die_nuwe_kuberwapen.m4a</p>
+      </div>
+    </div>
+    <audio controls preload="metadata">
+      <source src="podcasts/Afrikaans_WhatsApp_familiegroepe_as_die_nuwe_kuberwapen.m4a" type="audio/mp4">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+</main>
+</body>
+</html>

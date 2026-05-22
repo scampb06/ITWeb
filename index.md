@@ -3,7 +3,7 @@ layout: default
 title: Hybrid cyber and information operations: how attackers blend disruption and influence in 2026  
 ---
 
-## Presentations & Dashboards
+## Presentations, Dashboards, and Podcasts
 
 | Resource | Description |
 |---|---|
@@ -12,6 +12,7 @@ title: Hybrid cyber and information operations: how attackers blend disruption a
 | [Keynote Presentation (Claude - in-between)](analysis/itweb_keynote_v5.html) | Combined version of the ITWeb Security Summit 2026 plenary presentation |
 | [Keynote Presentation (NotebookLM)](analysis/the-hybrid-coalescence.html) | Alternative NotebookLM version of the ITWeb Security Summit 2026 plenary presentation |
 | [Africa Country Dashboard](analysis/africa-country-dashboard-updated.html) | Interactive dashboard: map of Africa with per country statistics on population, economic indicators, and disinformation. Filter by region and choose metrics for scatter plot |
+| [Podcasts](analysis/podcasts.html) | Audio companion pieces to the keynote, currently available in English and Afrikaans |
 
 ---
 
