@@ -7,6 +7,7 @@ title: Hybrid cyber and information operations: how attackers blend disruption a
 
 | Resource | Description |
 |---|---|
+| [Recording of Extended Keynote Presentation](https://youtu.be/uQXyhTaxwIg) | Post event recording of an extended version of the Keynote Presentation Hybrid Cyber and Information Operations (73 minutes) |
 | [Keynote Presentation (Claude - longer)](analysis/itweb_hybrid_keynote.html) | ITWeb Security Summit 2026 — "Hybrid Cyber and Information Operations: How Attackers Blend Disruption and Influence in 2026" |
 | [Keynote Presentation (Claude - shorter)](analysis/itweb_keynote_v2.html) | Shorter version of the ITWeb Security Summit 2026 plenary presentation |
 | [Keynote Presentation (Claude - in-between)](analysis/itweb_keynote_v5.html) | Combined version of the ITWeb Security Summit 2026 plenary presentation |
@@ -18,7 +19,7 @@ title: Hybrid cyber and information operations: how attackers blend disruption a
 
 ## Analysis & Research
 
-Background research papers prepared for the ITWeb Security Summit 2026 keynote. Each paper covers global, African, and South African perspectives.
+Background research papers prepared for the ITWeb Security Summit 2026 keynote. Each paper covers global, African, and South African perspectives. Analysis was done using Perplexity Pro which chose the most appropriate model depending upon the prompt. The exception was the Q&A for wich Claude Opus was specified as the model. 
 
 | Paper | Description |
 |---|---|
@@ -30,7 +31,7 @@ Background research papers prepared for the ITWeb Security Summit 2026 keynote. 
 | [Information Manipulation & Hate Speech](analysis/information-manipulation.md) | Real-world harms to ordinary Africans from disinformation and hate speech — deaths, violence, economic loss, and psychological injury |
 | [Countermeasures & Frameworks](analysis/countermeasures.md) | Elite and community responses to hybrid operations; the 2×2 matrix of countermeasures by audience and information-access level |
 | [Cunliffe-Jones Analysis](analysis/cunliffe-jones-analysis.md) | The 12 most harmful or high-impact false claims identified in the African fact-checking database |
-| [Perplexity Pro Incident Classification](analysis/incident_classification_scheme.md) | Working with Perplexity Pro to classify incidents according to the 3-part schema (cyber-enabled influence, influence-enabled cyber, parallel) |
+| [Incident Classification](analysis/incident_classification_scheme.md) | Working with Perplexity Pro to classify incidents according to the 3-part schema (cyber-enabled influence, influence-enabled cyber, parallel) |
 | [Perplexity Pro / Claude Opus 4.7 Q&A](analysis/perplexity-qa.md) | Questions and answers generated using Perplexity Pro and Claude Opus 4.7 on hybrid cyber-influence operations |
 
 ---
