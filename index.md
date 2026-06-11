@@ -7,7 +7,7 @@ title: Hybrid cyber and information operations: how attackers blend disruption a
 
 | Resource | Description |
 |---|---|
-| [Recording of Extended Keynote Presentation](https://youtu.be/uQXyhTaxwIg) | Post event recording of an extended version of the Keynote Presentation Hybrid Cyber and Information Operations (73 minutes) |
+| [Recording of Extended Keynote Presentation](https://youtu.be/uQXyhTaxwIg) | Post event recording of an extended version of the Keynote Presentation "Hybrid Cyber and Information Operations: How Attackers Blend Disruption and Influence in 2026" (73 minutes) |
 | [Keynote Presentation (Claude - longer)](analysis/itweb_hybrid_keynote.html) | ITWeb Security Summit 2026 — "Hybrid Cyber and Information Operations: How Attackers Blend Disruption and Influence in 2026" |
 | [Keynote Presentation (Claude - shorter)](analysis/itweb_keynote_v2.html) | Shorter version of the ITWeb Security Summit 2026 plenary presentation |
 | [Keynote Presentation (Claude - in-between)](analysis/itweb_keynote_v5.html) | Combined version of the ITWeb Security Summit 2026 plenary presentation |
@@ -19,7 +19,7 @@ title: Hybrid cyber and information operations: how attackers blend disruption a
 
 ## Analysis & Research
 
-Background research papers prepared for the ITWeb Security Summit 2026 keynote. Each paper covers global, African, and South African perspectives. Analysis was done using Perplexity Pro which chose the most appropriate model depending upon the prompt. The exception was the Q&A for wich Claude Opus was specified as the model. 
+Background research papers prepared for the ITWeb Security Summit 2026 keynote. Each paper covers global, African, and South African perspectives. Analysis was done using Perplexity Pro which chose the most appropriate model depending upon the prompt. The exception was the Q&A for which Claude Opus was specified as the model. 
 
 | Paper | Description |
 |---|---|
