@@ -33,7 +33,7 @@ Background research papers prepared for the ITWeb Security Summit 2026 keynote. 
 | [Cunliffe-Jones Analysis](analysis/cunliffe-jones-analysis.md) | The 12 most harmful or high-impact false claims identified in the African fact-checking database |
 | [Incident Classification](analysis/incident_classification_scheme.md) | Working with Perplexity Pro to classify incidents according to the 3-part schema (cyber-enabled influence, influence-enabled cyber, parallel) |
 | [Perplexity Pro / Claude Opus 4.7 Q&A](analysis/perplexity-qa.md) | Questions and answers generated using Perplexity Pro and Claude Opus 4.7 on hybrid cyber-influence operations |
-| [Select Bibliography](analysis/Bibliography%20for%20Keynote%20on%20Hybrid%20Cyber%20Information%20Operations%20Threats.md) | Selection of Books and White Papers |
+| [Select Bibliography](analysis/bibliography.md) | Selection of Books and White Papers |
 
 ---
 
